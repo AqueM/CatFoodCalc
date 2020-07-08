@@ -1,0 +1,18 @@
+version: 2.1
+
+executors:
+  python:
+    working_directory: ~/repo
+    description: Executor for testing python code
+    docker:
+      - image: circleci/python:3.8
+
+jobs:
+  checkout_code:
+    executor: python
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+            - .
