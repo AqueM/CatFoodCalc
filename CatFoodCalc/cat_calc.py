@@ -14,21 +14,22 @@ class Cat(object):
         self.der = self.calculate_der()
 
     def calculate_der(self):
-        der = self.der_formula_by_weight * self.get_kcal_per_kg_by_activity()
+        der = {}
+
+        amount = self.get_kcal_per_kg_by_activity()
+
+        der["min"] = self.der_formula_by_weight * amount["min"]
         der["min"] = round(der["min"], 2)
+        
+        der["max"] = self.der_formula_by_weight * amount["max"]
         der["max"] = round(der["max"], 2)
 
         return(der)
 
     def get_kcal_per_kg_by_activity(self):
-        kcal_per_kg = {}
+        amount = self.kcal_per_kg[self.activity]
 
-        levels_by_activity = self.kcal_per_kg[self.activity]
-
-        kcal_per_kg["min"] = levels_by_activity["min"]
-        kcal_per_kg["max"] = levels_by_activity["max"]
-
-        return(kcal_per_kg)
+        return(amount)
 
     def get_age_modifier(self):
         # TODO
