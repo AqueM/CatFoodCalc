@@ -1,0 +1,7 @@
+# Byte-compiled / optimized / DLL files
+
+*.pyc
+__pycache__
+
+# For more, see:
+# https://github.com/github/gitignore/blob/master/Python.gitignore
