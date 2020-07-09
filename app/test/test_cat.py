@@ -1,5 +1,11 @@
 import unittest
-import CatFoodCalc.cat_calc as cat_calc
+import app.cat_calc as cat_calc
+
+
+def get_test_results(method, used_cat):
+    tested_method = "cat_calc.Cat." + str(method) + "(used_cat)"
+    result = eval(tested_method)
+    return result
 
 
 class TestCatCalculations(unittest.TestCase):
@@ -17,21 +23,18 @@ class TestCatCalculations(unittest.TestCase):
     methods_to_test = {"der": "calculate_der",
                        "mer": "calculate_mer"}
 
-    def get_test_results(self, method, used_cat):
-        tested_method = "cat_calc.Cat." + str(method) + "(used_cat)"
-        result = eval(tested_method)
-        return result
+    def run_one_method(self, name, function):
+        for cat, value in self.test_cats_data.items():
+            tested_cat = cat_calc.Cat(value[0], value[1], value[2])
+            expected = self.test_cats_results[cat][name]
+            actual = get_test_results(function, tested_cat)
+            unittest.TestCase().assertEqual(actual, expected)
 
-    def method_base_test(self, methods):
+    def testCatMethods(self, methods=None):
+        if methods is None:
+            methods = self.methods_to_test
         for name, function in methods.items():
-            for cat, value in self.test_cats_data.items():
-                tested_cat = cat_calc.Cat(value[0], value[1], value[2])
-                expected = self.test_cats_results[cat][name]
-                actual = self.get_test_results(function, tested_cat)
-                unittest.TestCase().assertEqual(actual, expected)
-
-    def testMethods(self, methods=methods_to_test):
-        self.method_base_test(methods)
+            self.run_one_method(name, function)
 
 
 if __name__ == "__main__":

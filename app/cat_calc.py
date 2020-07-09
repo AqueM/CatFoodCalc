@@ -1,4 +1,4 @@
-from CatFoodCalc import nutritional_values
+from app import nutritional_values
 import statistics
 
 
