@@ -1,5 +1,5 @@
 import unittest
-import app.cat_calc as cat_calc
+import flaskr.cat_calc as cat_calc
 
 
 def get_test_results(method, used_cat):
@@ -15,9 +15,9 @@ class TestCatCalculations(unittest.TestCase):
         "cat3": [2, "kitten1", "outdoor"]
     }
     test_cats_results = {
-        "cat1": {"der": {"min": 139.36, "max": 201}, "mer": {"min": 139.36, "max": 201}},
-        "cat2": {"der": {"min": 402, "max": 402}, "mer": {"min": 562.8, "max": 562.8}},
-        "cat3": {"der": {"min": 134, "max": 134}, "mer": {"min": 268, "max": 335}},
+        "cat1": {"mer": {"min": 139.36, "max": 201}, "der": {"min": 139.36, "max": 201}},
+        "cat2": {"mer": {"min": 402, "max": 402}, "der": {"min": 562.8, "max": 562.8}},
+        "cat3": {"mer": {"min": 134, "max": 134}, "der": {"min": 268, "max": 335}},
     }
 
     methods_to_test = {"der": "calculate_der",

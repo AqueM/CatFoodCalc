@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block form %}
+<h4>Cat's information</h4>
+    <p class="form-group"><form action="." method="POST">
+        <label for="catWeight" class="col-form-label">Cat's weight (kg):</label>
+            <input id="catWeight" class="form-control" name="weight" {% if cat is defined %}value={{cat.weight}}
+            {% endif %} placeholder="Enter a cat's weight"/>
+        <label for="catAge" class="col-form-label">Cat's age (years):</label>
+    <select id="catAge" class="form-control" action="/" method="GET" name=age>
+            {% for key, value in ages %}
+            <option value="{{key}}" {% if cat is defined and cat.age==key %}SELECTED{% endif %}>{{value}}</option>
+            {% endfor %}
+        </select>
+        <label for="catActivity">Cat's activity:</label>
+            <select id="catActivity" class="form-control" action="/" method="GET" name=activity>
+            {% for key, value in activities %}
+            <option value="{{key}}"{% if cat is defined and cat.activity==key %}SELECTED{% endif %}>{{value}}</option>
+            {% endfor %}
+        </select>
+        <p>
+            {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+            {% endfor %}
+        </P>
+        <p><input class="btn btn-lg btn-success" type="submit" value="Calculate »"/></p>
+    </form>
+</p>
+{% endblock %}
+
+{% block catData %}
+<h4>Cat energy requirements</h4>
+    {% if cat is defined %}
+        <p><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips.mer}}">{{numbers.mer}}</a><BR> {{cat.mer["min"]}}{% if cat.mer["min"] != cat.mer["max"] %} - {{cat.mer["max"]}} kcal (average: {{cat.mer_avg}}){% endif %}
+        </p>
+        <p><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips.der}}">{{numbers.der}}</a><BR> {{cat.der["min"]}}{% if cat.der["min"] != cat.der["max"] %} - {{cat.der["max"]}} kcal (average: {{cat.der_avg}}){% endif %}
+        </p>
+    {% else %}
+        <p>Please provide your cat's information.</p>
+    {% endif %}
+{% endblock %}
+{% block nutriData %}
+<h4>Nutrients requirements</h4>
+<p>TBA</p>
+{% endblock %}
+{% block foodData %}
+<h4>Food calculations</h4>
+<p>TBA</p>
+{% endblock %}

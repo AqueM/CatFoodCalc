@@ -19,3 +19,4 @@ age_modifier = {
     "mother": {"min": 1.2, "max": 1.2},
     "mother3+": {"min": 1.7, "max": 1.7},
 }
+rer_value = 0.67
