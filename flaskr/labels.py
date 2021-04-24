@@ -13,6 +13,10 @@ activity_labels = {
 }
 default_dropdown_label = "-- Please choose an option --"
 
+input_labels = {"weight": "Weight (kg):", "weight_placeholder": "Enter a cat's weight", "age": "Age:",
+                "activity": "Activity level:", "submit": "Calculate »"}
+
+
 weight_empty_error = "Please provide your cat's weight."
 weight_invalid_error = "{!r} is not a valid number. Please provide cat weight as a decimal number."
 age_empty_error = "Please select your cat's age."

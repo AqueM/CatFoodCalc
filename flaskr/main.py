@@ -17,11 +17,16 @@ def index():
     numbers = labels.numbers_labels
     tooltips = labels.tooltips
     title = labels.project_title
+    inputs = labels.input_labels
+
+    weight= request.form["weight"]
+    age = request.form["age"]
+    activity = request.form["activity"]
 
     if request.method == "POST":
-        ready = validate_cat_data(request.form["weight"], request.form["age"], request.form["activity"])
+        ready = validate_cat_data(weight, age, activity)
         if ready:
-            cat = calc.Cat(request.form["weight"], request.form["age"], request.form["activity"])
+            cat = calc.Cat(weight, age, activity)
 
     return render_template("index.html", **locals())
 
