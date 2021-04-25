@@ -1,4 +1,4 @@
-from flaskr.enums import Nutrition, FoodType
+from app.enums import Nutrition, FoodType
 
 
 class Food(object):

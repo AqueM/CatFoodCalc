@@ -1,4 +1,4 @@
-from flaskr.enums import ProteinNeeds, Nutrition, Range
+from app.enums import ProteinNeeds, Nutrition, Range
 
 
 class FoodRating(object):

@@ -1,7 +1,7 @@
 import statistics
 
-import flaskr.enums as enums
-from flaskr import nutritional_values, food_requirements
+import app.enums as enums
+from app import nutritional_values, food_requirements
 
 
 class Cat(object):

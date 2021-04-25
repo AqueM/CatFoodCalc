@@ -1,7 +1,7 @@
 import unittest
 
-from flaskr import cat_calc
-from flaskr.enums import CatActivities, Range, NumberNames, CatAges, ProteinNeeds
+from app import cat_calc
+from app.enums import CatActivities, Range, NumberNames, CatAges, ProteinNeeds
 from tests.test_base import TestBase
 
 

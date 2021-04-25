@@ -7,7 +7,7 @@
 
 # Also references FEDIAF Nutrition guide page
 # http://www.fediaf.org/self-regulation/nutrition.html
-from flaskr.enums import CatActivities, CatAges, Range
+from app.enums import CatActivities, CatAges, Range
 
 kcal_by_activity = {
     CatActivities.indoor: {Range.min: 52, Range.max: 75},

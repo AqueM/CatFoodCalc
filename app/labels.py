@@ -1,4 +1,4 @@
-from flaskr.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds
+from app.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds
 
 age_labels = {
     CatAges.kitten1: "kitten under 4 mo",

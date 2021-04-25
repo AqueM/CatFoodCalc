@@ -5,7 +5,7 @@ import statistics
 # https://www.msdvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-and-related-diseases-of-small-animals
 # https://www.nap.edu/catalog/10668/nutrient-requirements-of-dogs-and-cats
 # Assuming fully digestible protein source
-from flaskr.enums import CatAges, Range, CatActivities
+from app.enums import CatAges, Range, CatActivities
 
 protein_needs_bodyweight = {
     CatAges.kitten1: 9,

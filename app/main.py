@@ -1,9 +1,9 @@
 from flask import Flask, render_template, flash, request, get_flashed_messages
 
-import flaskr.enums as enums
-import flaskr.labels as labels
-from flaskr import cat_calc as calc
-from flaskr.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
+import app.enums as enums
+import app.labels as labels
+from app import cat_calc as calc
+from app.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
