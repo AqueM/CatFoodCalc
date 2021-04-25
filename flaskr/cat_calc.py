@@ -30,24 +30,22 @@ class Cat(object):
         mer = {enums.Range.min: self.rer_formula_by_weight * self.kcal_needs_per_kg[enums.Range.min],
                enums.Range.max: self.rer_formula_by_weight * self.kcal_needs_per_kg[enums.Range.max]}
 
-        mer[enums.Range.min] = round(mer[enums.Range.min], 2)
-        mer[enums.Range.max] = round(mer[enums.Range.max], 2)
-
+        mer[enums.Range.min] = round(mer[enums.Range.min], 0)
+        mer[enums.Range.max] = round(mer[enums.Range.max], 0)
         return mer
 
     def calculate_der(self):
         der = {enums.Range.min: self.mer[enums.Range.min] * self.age_modif[enums.Range.min],
                enums.Range.max: self.mer[enums.Range.max] * self.age_modif[enums.Range.max]}
 
-        der[enums.Range.min] = round(der[enums.Range.min], 2)
-        der[enums.Range.max] = round(der[enums.Range.max], 2)
-
+        der[enums.Range.min] = round(der[enums.Range.min], 0)
+        der[enums.Range.max] = round(der[enums.Range.max], 0)
         return der
 
     def calculate_protein_needs(self):
         protein_needs = {
             enums.ProteinNeeds.bodyweight: round(food_requirements.protein_needs_bodyweight[self.age] * self.weight, 2),
-            enums.ProteinNeeds.dry_mass: round(food_requirements.protein_needs_dry_mass_by_age[self.age], 2)
+            enums.ProteinNeeds.dry_mass: food_requirements.protein_needs_dry_mass_by_age[self.age]
         }
         if self.age == enums.CatAges.adult:
             protein_needs[enums.ProteinNeeds.dry_mass] = protein_needs[enums.ProteinNeeds.dry_mass][self.activity]

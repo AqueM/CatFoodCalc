@@ -1,17 +1,23 @@
-import statistics
-
-from flaskr.enums import Nutrition, Range
+from flaskr.enums import Nutrition, FoodType
 
 
 class Food(object):
-    kcal_values = {
-        Nutrition.protein: 4,
-        Nutrition.carbs: 4,
-        Nutrition.fat: 9
-    }
+    # Gross energy as per
+    # FEDIAF Nutritional Guidelines (2019), as detailed in
+    # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
+    # 7.2.2.1. Gross energy, Table VII-5.
+    # Predicted gross energy values of protein, fat and carbohydrate
+    # http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
 
-    def __init__(self, food_type, protein, fat, fibre, ash, moisture, mass=None):
-        self.food_type = food_type
+    gross_energy_values = {
+        Nutrition.protein: 5.7,
+        Nutrition.carbs: 4.1,
+        Nutrition.fat: 9.4,
+        Nutrition.fibre: 4.1
+    }
+    has_energy = [Nutrition.protein, Nutrition.fat, Nutrition.carbs, Nutrition.fibre]
+
+    def __init__(self, protein, fat, fibre, ash, moisture, mass=None):
         self.percentages = {
             Nutrition.protein: protein,
             Nutrition.fat: fat,
@@ -20,60 +26,35 @@ class Food(object):
             Nutrition.moisture: moisture,
             Nutrition.carbs: self.calculate_carbs()
         }
-        self.kcal_per_100g = self.calculate_kcal_per_100g()
-        if mass is not None:
-            self.mass = mass
-            self.dry_mass = self.calculate_dry_mass()
-            self.kcal_whole = self.calculate_kcal_whole()
+        if self.percentages[Nutrition.moisture] is not None and self.percentages[Nutrition.moisture] > 0:
+            self.food_type = FoodType.wet
+        else:
+            self.food_type = FoodType.dry
+        self.kcal_per_100g = self.calculate_energy()
+        self.dry_mass_perc = 100 - self.percentages[Nutrition.moisture]
+
+        if mass is not None and mass > 0:
+            self.kcal_whole = (self.kcal_per_100g * mass) / 100
 
     def calculate_carbs(self):
         return 100 - (sum(value for key, value in self.percentages.items() if key != Nutrition.carbs))
 
-    def calculate_dry_mass(self):
-        return (100 - self.percentages[Nutrition.moisture]) / self.mass
+    def calculate_kcal_by_nutrition(self, nutrition):
+        return self.percentages[nutrition] * Food.gross_energy_values[nutrition]
 
-    def calculate_kcal_per_100g(self):
-        kcal = {
-            Nutrition.protein: self.calculate_kcal_protein(),
-            Nutrition.fat: self.calculate_kcal_fat(),
-            Nutrition.carbs: self.calculate_kcal_carbs()
-        }
-        kcal["all"] = sum(kcal.values())
-        return kcal
+    # Formulas and numbers for energy calculation come from
+    # FEDIAF Nutritional Guidelines(2019), as detailed in
+    # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
+    # 7.2.2.2. Metabolisable energy
+    # http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
+    def calculate_energy(self):
+        gross_energy = None
+        for nutrition in Food.gross_energy_values.keys():
+            gross_energy = gross_energy + self.calculate_kcal_by_nutrition(nutrition)
 
-    def calculate_kcal_protein(self):
-        return self.percentages[Nutrition.protein] * Food.kcal_values[Nutrition.protein]
+        fibre_dry_mass_perc = (self.percentages[Nutrition.fibre] * self.percentages[Nutrition.moisture]) / 100
 
-    def calculate_kcal_fat(self):
-        return self.percentages[Nutrition.fat] * Food.kcal_values[Nutrition.fat]
-
-    def calculate_kcal_carbs(self):
-        return self.percentages[Nutrition.carbs] * Food.kcal_values[Nutrition.carbs]
-
-    def calculate_kcal_whole(self):
-        kcal_whole = dict()
-        for key, value in self.kcal_per_100g:
-            kcal_whole[key] = (self.mass * value) / 100
-        kcal_whole["all"] = sum(kcal_whole.values())
-        return kcal_whole
-
-    def calculate_protein_by_need(self, cat):
-        food_grams_by_protein = {
-            Range.min: (cat.protein_needs[Range.min] * 100) / self.percentages[Nutrition.protein],
-            Range.max: (cat.protein_needs[Range.max] * 100) / self.percentages[Nutrition.protein],
-        }
-        protein_avg = statistics.mean([food_grams_by_protein[Range.min], food_grams_by_protein[Range.max]])
-        protein_avg = round(protein_avg, 2)
-        food_grams_by_protein[Range.avg] = protein_avg
-        return food_grams_by_protein
-
-    def calculate_kcal_by_need(self, cat):
-        food_grams_by_kcal = {
-            Range.min: (cat.protein_needs[Range.min] * 100) / self.percentages[Nutrition.protein],
-            Range.max: (cat.protein_needs[Range.max] * 100) / self.percentages[Nutrition.protein],
-        }
-        protein_avg = statistics.mean([food_grams_by_kcal[Range.min], food_grams_by_kcal[Range.max]])
-        protein_avg = round(protein_avg, 2)
-        food_grams_by_kcal[Range.avg] = protein_avg
-        return food_grams_by_kcal
-
+        digestibility_modif = 87.9 - (0.88 * fibre_dry_mass_perc)
+        digestible_energy = (gross_energy * digestibility_modif) / 100
+        metabolic_energy_per_100 = digestible_energy - (0.77 * self.percentages[Nutrition.protein])
+        return metabolic_energy_per_100

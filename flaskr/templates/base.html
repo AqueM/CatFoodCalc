@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
-<!--        <link href="https://getbootstrap.com/docs/3.3/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
+    <!--        <link href="https://getbootstrap.com/docs/3.3/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
     <title>{% block page %}{% endblock %} {{title}}</title>
     <style>
         body {
@@ -37,29 +37,28 @@
     $(function () {
     $('[data-toggle="tooltip"]').tooltip()
     })
-
 </script>
 <div class="container">
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link active">Home</a></li>
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link">About</a></li>
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link">Contact</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link active" href="#">Calculator</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" href="#">About</a></li>
+                <!--                <li class="nav-item" role="presentation"><a href="#" class="nav-link">GitHub</a></li>-->
             </ul>
         </nav>
         <h3 class="text-muted">{{title}}</h3>
     </div>
     <div class="jumbotron">
         <div class="row">
-            <form class="row" action="." method="POST">
-            <div name="inputFormCat" class="col-lg-6">
-                {% block formCat %}{% endblock %}
-            </div>
-            <div name="inputFormFood" class="col-lg-6">
-                {% block formFood %}{% endblock %}
-                <p><input class="btn btn-lg btn-success" type="submit" value="{{inputs.submit}}"/></p>
-            </div>
+            <form action="." class="row" method="POST">
+                <div class="col-lg-6" name="inputFormCat">
+                    {% block formCat %}{% endblock %}
+                </div>
+                <div class="col-lg-6" name="inputFormFood">
+                    {% block formFood %}{% endblock %}
+                    <p><input class="btn btn-lg btn-success" type="submit" value="{{inputs.submit}}"/></p>
+                </div>
             </form>
             <div class="col-lg-2">
                 <p class="lead">{% block lead %}Results{% endblock %}</p>

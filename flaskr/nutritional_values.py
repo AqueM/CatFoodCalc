@@ -24,3 +24,4 @@ age_modifier = {
     CatAges.mother3: {Range.min: 1.7, Range.max: 1.7},
 }
 rer_value = 0.67
+

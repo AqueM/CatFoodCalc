@@ -51,3 +51,8 @@ class NumberNamesLong(Enum):
 class ProteinNeeds(Enum):
     bodyweight = 1
     dry_mass = 2
+
+
+class FoodType(Enum):
+    dry = 0
+    wet = 1
