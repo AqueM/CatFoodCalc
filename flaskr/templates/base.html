@@ -52,11 +52,17 @@
     </div>
     <div class="jumbotron">
         <div class="row">
-            <div name="inputForm">
-                {% block form %}{% endblock %}
+            <form class="row" action="." method="POST">
+            <div name="inputFormCat" class="col-lg-6">
+                {% block formCat %}{% endblock %}
             </div>
-            <div class="col-md-4">
-                <p class="lead">{% block lead %}Test description{% endblock %}</p>
+            <div name="inputFormFood" class="col-lg-6">
+                {% block formFood %}{% endblock %}
+                <p><input class="btn btn-lg btn-success" type="submit" value="{{inputs.submit}}"/></p>
+            </div>
+            </form>
+            <div class="col-lg-2">
+                <p class="lead">{% block lead %}Results{% endblock %}</p>
             </div>
         </div>
     </div>

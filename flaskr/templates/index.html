@@ -2,22 +2,22 @@
 
 {% block title %}{% endblock %}
 
-{% block form %}
+{% block formCat %}
+        <div class="form-group">
 <h4>Cat's information</h4>
-    <p class="form-group"><form action="." method="POST">
         <label for="catWeight" class="col-form-label">{{inputs.weight}}</label>
             <input id="catWeight" class="form-control" name="weight" {% if weight|length %} value={{weight}}
             {% endif %} placeholder="{{inputs.weight_placeholder}}"/>
         <label for="catAge" class="col-form-label">{{inputs.age}}</label>
-    <select id="catAge" class="form-control" action="/" method="GET" name=age>
+    <select id="catAge" class="form-control" action="/" method="GET" name="age">
             {% for key, value in ages %}
-            <option value="{{key}}" {% if age|length and age==key %}SELECTED{% endif %}>{{value}}</option>
+            <option value="{{key}}" {% if age==key %}SELECTED{% endif %}>{{value}}</option>
             {% endfor %}
         </select>
         <label for="catActivity" class="col-form-label">{{inputs.activity}}</label>
-            <select id="catActivity" class="form-control" action="/" method="GET" name=activity>
+            <select id="catActivity" class="form-control" action="/" method="GET" name="activity">
             {% for key, value in activities %}
-            <option value="{{key}}"{% if activity|length and activity==key %}SELECTED{% endif %}>{{value}}</option>
+            <option value="{{key}}"{% if activity==key %}SELECTED{% endif %}>{{value}}</option>
             {% endfor %}
         </select>
             <p>
@@ -25,25 +25,58 @@
             <div class="text-danger" role="alert"><div class="flash">{{ message }}</div></div>
             {% endfor %}
             </p>
-        <p><input class="btn btn-lg btn-success" type="submit" value="{{inputs.submit}}"/></p>
-    </form>
-</p>
+</div>
 {% endblock %}
-
+{% block formFood %}
+<div class="form-group">
+<h4>Food information</h4>
+        <label for="protein" class="col-form-label">{{inputs.protein}}</label>
+            <input id="protein" class="form-control" name="protein" {% if protein|length %} value={{protein}}
+            {% endif %} placeholder="{{inputs.food_placeholder}}"/>
+        <label for="fat" class="col-form-label">{{inputs.fat}}</label>
+            <input id="fat" class="form-control" name="fat" {% if fat|length %} value={{fat}}
+            {% endif %} placeholder="{{inputs.food_placeholder}}"/>
+    <label for="fibre" class="col-form-label">{{inputs.fibre}}</label>
+            <input id="fibre" class="form-control" name="fibre" {% if fibre|length %} value={{fibre}}
+            {% endif %} placeholder="{{inputs.food_placeholder}}"/>
+    <label for="ash" class="col-form-label">{{inputs.ash}}</label>
+            <input id="ash" class="form-control" name="ash" {% if ash|length %} value={{ash}}
+            {% endif %} placeholder="{{inputs.food_placeholder}}"/>
+    <label for="moisture" class="col-form-label">{{inputs.moisture}}</label>
+            <input id="moisture" class="form-control" name="moisture" {% if moisture|length %} value={{moisture}}
+            {% endif %} placeholder="{{inputs.food_placeholder}}"/>
+            <p>
+            {% for message in get_flashed_messages() %}
+            <div class="text-danger" role="alert"><div class="flash">{{ message }}</div></div>
+            {% endfor %}
+            </p>
+</div>
+{% endblock %}
 {% block catData %}
-<h4>Cat energy requirements</h4>
+<h4>Energy requirements</h4>
     {% if cat is defined %}
-        <p><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips.mer}}">{{numbers.mer}}</a><BR> {{cat.mer["min"]}}{% if cat.mer["min"] != cat.mer["max"] %} - {{cat.mer["max"]}} kcal (average: {{cat.mer_avg}} kcal){% endif %}
+        <p><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips[mer]}}">{{numbers_labels[mer]}}</a><BR>
+            {{cat.mer[range_min]}} kcal{% if cat.mer[range_min] != cat.mer[range_max] %} - {{cat.mer[range_max]}} kcal (average: {{cat.mer_avg}} kcal){% endif %}{{daily}}
         </p>
-        <p><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips.der}}">{{numbers.der}}</a><BR> {{cat.der["min"]}}{% if cat.der["min"] != cat.der["max"] %} - {{cat.der["max"]}} kcal (average: {{cat.der_avg}} kcal){% endif %}
+        <p><b><a href="#" data-toggle="tooltip" data-placement="top" title="{{tooltips[der]}}">{{numbers_labels[der]}}</a></B><BR>
+            {{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}} kcal (average: {{cat.der_avg}} kcal){% endif %}{{daily}}
         </p>
     {% else %}
         <p>Please provide your cat's information.</p>
     {% endif %}
 {% endblock %}
 {% block nutriData %}
-<h4>Nutrients requirements</h4>
-<p>TBA</p>
+<h4>Nutrient requirements</h4>
+{% if cat is defined %}
+    <p>Protein:<BR>
+    <a href="#" data-toggle="tooltip" data-placement="top" title="{{protein_labels[dm]}}">{{cat.protein_needs[dm]}}/100g food</a> - up to <a href="#" data-toggle="tooltip" data-placement="top" title="{{protein_labels[bw]}}">{{cat.protein_needs[bw]}}g</a>{{daily}}</p>
+    <p>Fats:<BR>
+    {{fat_needs[range_min]}} - {{fat_needs[range_max]}}% {{dm_label}}</P>
+    <p>Carbs:<BR>
+    {{carb_needs[range_min]}} - {{carb_needs[range_max]}}% {{dm_label}}</P>
+    {% else %}
+        <p>Please provide your cat's information.</p>
+    {% endif %}
 {% endblock %}
 {% block foodData %}
 <h4>Food calculations</h4>
