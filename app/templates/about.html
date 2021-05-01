@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% set active_page = "about" %}
+{% block title %}CatFoodCalculator{% endblock %}
+
+{% block jumbo %}
+<p class="lead">This tool is a side-project to hone my coding and testing knowledge, as well as my research skills.</p>
+<p class="lead">I love cats, and in cat-people circles the topic of food quality as well as amount you should feed is always a hot one.<BR>
+Because of this, I decided it would be neat to have a tool that could calculate your cat's needs based on scientific knowledge.</p>
+<p class="lead">This concept evolved over time to include a couple more features and ended up as this little app. Hope you enjoy it.</p>
+{% endblock %}
+
+{% block col1 %}
+<h4>Sources</h4>
+<p>Scientific papers and other sources used to determine cat needs, food nutritional values
+  and mathematical formulas used in the making of his app:</p>
+<ul>
+  <li><a href="http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf">
+    Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs (FEDIAF, 2019)
+  </a></li>
+  <li><a href="http://www.fediaf.org/self-regulation/nutrition.html">
+    FEDIAF Nutrition Guide
+  </a></li>
+  <li><a href="https://www.msdvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-and-related-diseases-of-small-animals">
+    NRC Guidelines (2006)
+  </a></li>
+  <li><a href="https://www.aafco.org/Portals/0/SiteContent/Regulatory/Committees/Pet-Food/Reports/Pet_Food_Report_2013_Midyear-Proposed_Revisions_to_AAFCO_Nutrient_Profiles.pdf">
+    AAFCO Methods For Substantiating Nutritional Adequacy Of Dog And Cat Foods (2014)
+  </a></li>
+</ul>
+{% endblock %}
+
+{% block col2 %}
+<h4>Special thanks to</h4>
+<ul>
+  <li><a href="https://github.com/tymik">Jan Tymiński</a> for co-piloting this project</li>
+  <li><a href="https://github.com/hardpenguin">Hard Penguin</a> for code reviews</li>
+  <li><a href="https://github.com/katheroine">Katarzyna Krasińska</a> for moral and coding support</li>
+</ul>
+{% endblock %}
+
+{% block col3 %}
+<h4>More</h4>
+<p>If you'd like to know more about me, you can check out my Beacons page
+  <a href="https://beacons.page/drosk">here</a></p>
+{% endblock %}

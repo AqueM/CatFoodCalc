@@ -26,7 +26,9 @@ class Food(object):
             Nutrition.moisture: moisture,
             Nutrition.carbs: self.calculate_carbs()
         }
-        if self.percentages[Nutrition.moisture] is not None and self.percentages[Nutrition.moisture] > 0:
+        if self.percentages[Nutrition.moisture] is None:
+            self.percentages[Nutrition.moisture] = 0
+        if self.percentages[Nutrition.moisture] > 0:
             self.food_type = FoodType.wet
         else:
             self.food_type = FoodType.dry

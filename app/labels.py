@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds
 
 age_labels = {
@@ -15,15 +17,18 @@ activity_labels = {
 }
 default_dropdown_label = "-- Please choose an option --"
 
-input_labels = {"weight": "Weight (kg):", "weight_placeholder": "Enter a cat's weight", "age": "Age:",
-                "activity": "Activity level:", "submit": "Calculate »",
+input_labels = {"weight": "Weight (kg)", "weight_placeholder": "Enter the cat's weight", "age": "Age",
+                "activity": "Activity level", "submit": "Calculate »",
                 "food_placeholder": "As per packaging label",
                 "protein": "Protein %", "fat": "Fat %", "fibre": "Fibre %", "ash": "Ash %", "moisture": "Moisture %"}
 
 weight_empty_error = "Please provide your cat's weight."
-weight_invalid_error = "{!r} is not a valid number. Please provide cat weight as a decimal number."
+weight_invalid_error = "Please provide cat weight as a decimal number."
 age_empty_error = "Please select your cat's age."
 activity_empty_error = "Please select your cat's activity level."
+nutrition_empty_error = "Please provide required percentages."
+nutrition_invalid_error = "All input values must be numbers, and only numbers (no % needed)."
+moisture_invalid_error = "Moisture % must be a number or left empty."
 
 numbers_labels = {NumberNames.der: NumberNamesLong.der.value, NumberNames.mer: NumberNamesLong.mer.value}
 tooltips = {
@@ -41,3 +46,11 @@ requirements_tooltips = {
 }
 
 project_title = "Cat Food Calculator"
+
+
+def display_years():
+    now = datetime.now().year
+    if now != 2021:
+        return "2021 - " + str(now)
+    else:
+        return "2021"
