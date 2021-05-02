@@ -22,13 +22,13 @@ input_labels = {"weight": "Weight (kg)", "weight_placeholder": "Enter the cat's 
                 "food_placeholder": "As per packaging label",
                 "protein": "Protein %", "fat": "Fat %", "fibre": "Fibre %", "ash": "Ash %", "moisture": "Moisture %"}
 
-weight_empty_error = "Please provide your cat's weight."
-weight_invalid_error = "Please provide cat weight as a decimal number."
+weight_error = "Please provide your cat's weight as a decimal number."
+weight_invalid_error = "Cat weight can't be bigger than 50 kg."
 age_empty_error = "Please select your cat's age."
 activity_empty_error = "Please select your cat's activity level."
 nutrition_empty_error = "Please provide required percentages."
 nutrition_invalid_error = "All input values must be numbers, and only numbers (no % needed)."
-moisture_invalid_error = "Moisture % must be a number or left empty."
+moisture_invalid_error = "Moisture %% must be a number or left empty."
 
 numbers_labels = {NumberNames.der: NumberNamesLong.der.value, NumberNames.mer: NumberNamesLong.mer.value}
 tooltips = {

@@ -1,97 +1,24 @@
 {% extends 'base.html' %}
 {% set active_page = "index" %}
-{% block title %}CatFoodCalculator{% endblock %}
+{% block header %}CatFoodCalculator{% endblock %}
 
 {% block jumbo %}
-    <form action="."method="POST">
+    <form action="" method="POST">
         <div class="row" name="data">
             <div class="col-md-4" name="inputFormCat">
-                <div class="form-group">
                     <h4>Cat's information</h4>
-                    <label for="catWeight" class="col-form-label required">{{inputs.weight}}</label>
-                        <input id="catWeight" class="form-control required" name="weight" {% if weight|length %} value={{weight}}
-                        {% endif %} placeholder="{{inputs.weight_placeholder}}"/>
-                    <label for="catAge" class="col-form-label required">{{inputs.age}}</label>
-                        <select id="catAge" class="form-control" action="/" method="GET" name=age>
-                            {% for key, value in ages %}
-                            <option value="{{key}}" {% if age is defined and age==key %}SELECTED{% endif %}>{{value}}</option>
-                            {% endfor %}
-                        </select>
-                    <label for="catActivity" class="col-form-label required">{{inputs.activity}}</label>
-                        <select id="catActivity" class="form-control" action="/" method="GET" name=activity>
-                        {% for key, value in activities %}
-                        <option value="{{key}}" {% if activity is defined and activity==key %}SELECTED{% endif %}>{{value}}</option>
-                        {% endfor %}
-                        </select>
-                </div>
+                    {{ wtf.quick_form(form.cat) }}
             </div>
             <div class="col-md-3" name="inputFormFood">
-                <div class="form-group">
                     <h4>Food information</h4>
-                    <label class="col-form-label required" for="protein">Protein %</label>
-                        <input class="form-control"  id="protein" name="protein"
-                               placeholder="{{inputs.food_placeholder}}"
-                               {% if protein|length %} value={{protein}} {% endif %}/>
-                    <label class="col-form-label required" for="fat">Fat %</label>
-                        <input class="form-control" id="fat" name="fat"
-                               placeholder="{{inputs.food_placeholder}}"
-                               {% if fat|length %} value={{fat}} {% endif %}/>
-                    <label class="col-form-label required" for="fibre">Fibre %</label>
-                        <input class="form-control"  id="fibre" name="fibre"
-                               placeholder="{{inputs.food_placeholder}}"
-                               {% if fibre|length %} value={{fibre}} {% endif %}/>
-                    <label class="col-form-label required" for="ash">Ash %</label>
-                        <input class="form-control" id="ash" name="ash"
-                               placeholder="{{inputs.food_placeholder}}"
-                               {% if ash|length %} value={{ash}} {% endif %}/>
-                    <label class="col-form-label" for="moisture">{{inputs.moisture}}</label>
-                        <input class="form-control" id="moisture" name="moisture"
-                               placeholder="{{inputs.food_placeholder}}"
-                               {% if moisture|length %} value={{moisture}} {% endif %}/>
-                </div>
+                    {{ wtf.quick_form(form.food) }}
+                    {{ form.submit(class="btn btn-lg btn-success align-center") }}
             </div>
             <div class="col-md-4" name="results">
                 <h4>Results</h4>
-                <p class="lead">
-                    {% if cat is defined and food is defined %}
-                    <p>Results</p>
-                    {% else %}
-                    <p>Provide data to see results here.</p>
-                    {% endif %}
-                </p>
+                <p class="lead">Results</p>
             </div>
-        </div>
-        <div class="row" name="errors">
-            <div class="col-md-4" name="catErrors">
-                {% with catErrors = get_flashed_messages(category_filter=["cat"]) %}
-                {% if catErrors %}
-                <p>
-                {% for catError in catErrors %}
-                <div class="text-danger" role="alert"><div class="flash">{{ catError }}</div></div>
-                {% endfor %}
-                </p>
-                {% endif %}
-                {% endwith %}
-            </div>
-            <div class="col-md-3" name="foodErrors">
-                {% with foodErrors = get_flashed_messages(category_filter=["food"]) %}
-                {% if foodErrors %}
-                <p>
-                {% for foodError in foodErrors %}
-                <div class="text-danger" role="alert"><div class="flash">{{ foodError }}</div></div>
-                {% endfor %}
-                </p>
-                {% endif %}
-                {% endwith %}
-            </div>
-            <div class="col-md-4"></div>
-        </div>
-        <div class="row d-flex " name="submit">
-            <div class="col-md-4"></div>
-            <div class="col-md-3" name="submit">
-                <input class="btn btn-lg btn-success float-right" type="submit" value="{{inputs.submit}}"/>
-            </div>
-            <div class="col-md-4"></div>
+
         </div>
     </form>
 {% endblock %}
@@ -122,15 +49,16 @@
 {% block col2 %}
 <h4>Nutrient requirements</h4>
 {% if cat is defined %}
-<p>Protein:<BR>
+<p><b>Protein:</b><BR>
     <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
         {{cat.protein_needs[dm]}}/100g
-        food</a> - up to <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
-        {{cat.protein_needs[bw]}}g</a><br>per day
+        food</a> per day <BR>or<br>
+    <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
+        {{cat.protein_needs[bw]}}g</a> per day
 </p>
-<p>Fats:<BR>
+<p><b>Fats:</b><BR>
     {{fat_needs[range_min]}} - {{fat_needs[range_max]}}% daily food's dry mass</P>
-<p>Carbs:<BR>
+<p><b>Carbs:</b><BR>
     {{carb_needs[range_min]}} - {{carb_needs[range_max]}}% daily food's dry mass</P>
 {% else %}
 <p>Please provide your cat's information.</p>

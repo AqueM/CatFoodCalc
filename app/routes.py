@@ -1,7 +1,6 @@
 import app.labels as labels
-from app import flask_app, render_template, request
+from app import flask_app, render_template, request, cat_calc
 from app.enums import Range, NumberNames, ProteinNeeds
-from app.flask_validations import validate_food, validate_cat, validate_moisture
 from app.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
 from app.forms import CalcForm
 
@@ -33,21 +32,13 @@ def calculator():
 
     fat_needs = fat_needs_dry_mass
     carb_needs = carbs_needs_dry_mass
-    form = CalcForm()
+    form = CalcForm(request.form)
     year = labels.display_years()
-
-    if request.method == "POST":
-        validate_cat()
-        protein = request.form["protein"]
-        fat = request.form["fat"]
-        fibre = request.form["fibre"]
-        ash = request.form["ash"]
-        moisture = request.form["moisture"]
-        validate_food(request.form["protein"],
-                      request.form["fat"],
-                      request.form["fibre"],
-                      request.form["ash"])
-        validate_moisture(request.form["moisture"])
+    # food_ok = form_food.validate_on_submit()
+    # if cat_ok:
+    #     cat = cat_calc.Cat(form_cat.weight, eval(form_cat.age), eval(form_cat.activity))
+    if form.cat.validate_on_submit():
+        cat = cat_calc.Cat(form.cat.weight.data, form.cat.age.data, form.cat.activity.data)
     return render_template("calc_form.html", **locals())
 
 

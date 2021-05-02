@@ -4,7 +4,7 @@
     ('/about', 'about', 'About'),
     ('https://github.com/AqueM/CatFoodCalc', 'github', 'GitHub')
 ] -%}
-
+{% import "bootstrap/wtf.html" as wtf %}
 {% set active_page = active_page|default('index') -%}
 <html lang="en">
 <head>
@@ -28,10 +28,10 @@
     padding-right: 20px;
     padding-left: 20px;
     }
-    .required:after {
-      content:" *";
-      color:red;
-    }
+<!--    .required:after {-->
+<!--      content:" *";-->
+<!--      color:red;-->
+<!--    }-->
 
     </style>
 </head>

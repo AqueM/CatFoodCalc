@@ -38,7 +38,7 @@ def validate_cat_activity(activity):
 def validate_cat_weight(weight):
     result = True
     if not weight:
-        flash(labels.weight_empty_error, category="cat")
+        flash(labels.weight_error, category="cat")
         result = False
     else:
         try:
@@ -66,7 +66,6 @@ def validate_food(*args):
         flash(labels.nutrition_empty_error, category="food")
     if invalid:
         flash(labels.nutrition_invalid_error, category="food")
-    print(get_flashed_messages(with_categories=True))
 
 
 def validate_moisture(moisture):
