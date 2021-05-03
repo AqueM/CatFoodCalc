@@ -20,19 +20,21 @@
     padding-top: 20px;
     padding-bottom: 20px;
     }
-    .marketing {
+        .marketing {
     padding-right: 20px;
     padding-left: 20px;
     }
-    footer {
+        footer {
     padding-right: 20px;
     padding-left: 20px;
     }
-<!--    .required:after {-->
-<!--      content:" *";-->
-<!--      color:red;-->
-<!--    }-->
-
+        .required:before {
+      content:"* ";
+      color:red;
+    }
+        .help-block{
+        color:red;
+    }
     </style>
 </head>
 <body>
@@ -57,14 +59,13 @@
             <ul class="nav nav-pills justify-content-end">
                 {% for href, id, caption in navigation_bar %}
                 <li class="nav-item" role="presentation"><a class="nav-link
-                        {% if id == active_page %} active"{% endif %}"
+                        {% if id == active_page %} active{% endif %}"
                         {% if id == "github" %} target="_blank"{% endif %}
                     href="{{ href|e }}">{{ caption|e }}</a></li>
                 {% endfor %}
             </ul>
         </nav>
-        <h3 class="text-muted">{% block title %}
-        {% endblock %}</h3>
+        <h3 class="text-muted">{{title}}</h3>
         <p class="lead">Online tool to calculate how much your cat should eat based on their weight,
             activity level and age<br>
         as well as the quality of food you have.</p>
@@ -73,25 +74,16 @@
         {% block jumbo %}
         {% endblock %}
     </div>
-</div>
-<div class="container">
-<div class="row marketing">
-    <div class="col-md-4" name="dataRow1">
-        {% block col1 %}{% endblock %}
+    <div class="container" name="container-lower">
+    {% block container2 %}
+    {% endblock %}
+    {% block columns %}
+    {% endblock %}
     </div>
-
-    <div class="col-md-4" name="dataRow2">
-        {% block col2 %}{% endblock %}
+    <div class="container" name="container-lowest">
+        <footer class="footer">
+            <p>© {{year}} <a href="https://beacons.page/drosk">Dorota "Aque" Roskowska</a></p>
+        </footer>
     </div>
-
-    <div class="col-md-4" name="dataRow3">
-        {% block col3 %}{% endblock %}
-    </div>
-
-</div>
-<footer class="footer">
-    <p>© {{year}} <a href="https://beacons.page/drosk">Dorota "Aque" Roskowska</a></p>
-</footer>
-</div>
 </body>
 </html>

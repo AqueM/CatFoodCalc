@@ -3,9 +3,9 @@ from datetime import datetime
 from app.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds
 
 age_labels = {
-    CatAges.kitten1: "kitten under 4 mo",
-    CatAges.kitten2: "kitten under 9 mo",
-    CatAges.kitten3: "kitten under 12 mo",
+    CatAges.kitten1: "kitten under 4 months",
+    CatAges.kitten2: "kitten under 9 months",
+    CatAges.kitten3: "kitten under 12 months",
     CatAges.adult: "adult cat",
     CatAges.pregnant: "pregnant cat",
     CatAges.mother: "lactating cat (under 3 kittens)",
@@ -22,8 +22,11 @@ input_labels = {"weight": "Weight (kg)", "weight_placeholder": "Enter the cat's 
                 "food_placeholder": "As per packaging label",
                 "protein": "Protein %", "fat": "Fat %", "fibre": "Fibre %", "ash": "Ash %", "moisture": "Moisture %"}
 
+max_weight = 50
+min_weight = 0.01
+
 weight_error = "Please provide your cat's weight as a decimal number."
-weight_invalid_error = "Cat weight can't be bigger than 50 kg."
+weight_invalid_error = "Cat weight must be between {0} and {1} kg.".format(min_weight, max_weight)
 age_empty_error = "Please select your cat's age."
 activity_empty_error = "Please select your cat's activity level."
 nutrition_empty_error = "Please provide required percentages."

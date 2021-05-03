@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block columns %}
+    <div class="row marketing" name="bottom-row">
+        <div class="col-md-4" name="bottom-col-1">
+    {% block col1 %}
+    {% endblock %}
+        </div>
+        <div class="col-md-4" name="bottom-col-2">
+    {% block col2 %}
+    {% endblock %}
+        </div>
+        <div class="col-md-4" name="bottom-col-3">
+    {% block col3 %}
+    {% endblock %}
+        </div>
+    </div>
+{% endblock %}

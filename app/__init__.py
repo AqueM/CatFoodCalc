@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, flash, request, get_flashed_messages
+
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap
 
 flask_app = Flask(__name__)

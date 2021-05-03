@@ -1,8 +1,8 @@
-from app.enums import ProteinNeeds, Nutrition, Range
+from app.enums import ProteinNeeds, Range, Nutrition
 
 
 class FoodRating(object):
-    def __init__(self, cat, food):
+    def __init__(self, cat, food, grains, grains3, plants, plants3, organs, byproducts, vitamins, taurine, preservatives):
         self.cat = cat
         self.food = food
         self.portion_by_protein = self.calculate_grams_by_protein_needs()
@@ -10,12 +10,14 @@ class FoodRating(object):
         if self.food.kcal_whole is not None:
             self.calculate_package_by_kcal()
         self.food_rating = self.determine_food_quality()
+        self.good_values = {organs, vitamins, taurine}
+        self.bad_values = {grains, grains3, plants, plants3, byproducts, preservatives}
 
     def calculate_grams_by_protein_needs(self):
         food_grams_by_protein = {
-            ProteinNeeds.dry_mass: (self.cat.protein_needs[ProteinNeeds.dry_mass] * 100) / self.percentages[
+            ProteinNeeds.dry_mass: (self.cat.protein_needs[ProteinNeeds.dry_mass] * 100) / self.food.percentages[
                 Nutrition.protein],
-            ProteinNeeds.bodyweight: (self.cat.protein_needs[ProteinNeeds.bodyweight] * 100) / self.percentages[
+            ProteinNeeds.bodyweight: (self.cat.protein_needs[ProteinNeeds.bodyweight] * 100) / self.food.percentages[
                 Nutrition.protein],
         }
         return food_grams_by_protein
@@ -49,6 +51,9 @@ class FoodRating(object):
             good_food = good_food + 1
         if self.determine_over_caloric_food:
             good_food = -1
+        for value in self.good_values | self.bad_values:
+            if value:
+                good_food = good_food + 1
         return good_food
 
     def calculate_package_by_kcal(self):

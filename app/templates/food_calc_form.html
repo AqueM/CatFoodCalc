@@ -1,0 +1,80 @@
+{% extends 'base_2col.html' %}
+{% set active_page = "index" %}
+{% block header %}CatFoodCalculator{% endblock %}
+
+{% block jumbo %}
+<form action="{{url_for('food_calculator')}}" method="POST">
+    <div class="form">
+        {{ form.food.csrf_token }}
+        {{ form.quality.csrf_token() }}
+        <div class="row" name="data">
+            <div class="col-md-4"><h3>Cat's information</h3></div>
+            <div class="col-md-4"><h3>Food information</h3></div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row" name="data">
+            <div class="col-md-4" name="catInfo">
+                <P><B>Weight: </B>{{weight}} kg</P>
+                <P><B>Activity level: </B>{{activity_label}}</P>
+                <P><B>Age: </B>{{age_label}}</P>
+                <p class="lead">Still need some data to calculate everything.
+                Please input information about the food in the following form.</p>
+                <p>To change the cat's data, click <a href="/">here.</a></p>
+            </div>
+            <div class="col-md-4" name="inputFormFood">
+                    <h4>Analytical ingredients</h4>
+                    {{ wtf.quick_form(form.food) }}
+            </div>
+            <div class="col-md-4" name="inputFoodQualityForm">
+                <h4>Ingredient quality</h4>
+                Check all that apply:<BR>
+                {{ wtf.quick_form(form.quality) }}
+
+            </div>
+        </div>
+        <div class="row justify-content-end" name="submits">
+                <div class="col-md-4 d-flex justify-content-end">
+                    {{ form.submit_food(class="btn btn-lg btn-success align-center") }}
+                </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+{% if cat is defined %}
+{% block container2 %}
+    <div class="row  marketing" name="results">
+        <h3>Results so far</h3>
+        {% if cat.is_kitten is true %}
+        <p><b>Your cat is a kitten!</b><br>
+            These values are only suggestions of how much your cat should eat <b>at the very least</b><br>
+        - kittens should eat as much as they want without limits, since they're growing.
+        Please do not limit your cat's food intake until it is fully grown.</p>
+        {% endif %}
+    </div>
+{% endblock %}
+{% block col1 %}
+            <h4>Energy requirements</h4>
+            <p>{{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}}
+                kcal (average: {{cat.der[range_avg]}} kcal){% endif %} per day
+            </p>
+            <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
+                                 balance energy expenditure in order to maintain body size,
+                body composition and a level of necessary and desirable physical activity
+                consistent with long-term good health.</p>
+{% endblock %}
+{% block col2 %}
+            <h4>Nutrient requirements</h4>
+            <p><b>Protein:</b><BR>
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
+                    {{cat.protein_needs[dm]}}/100g
+                    food</a>
+                per day or
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
+                    {{cat.protein_needs[bw]}}g</a> per day
+            </p>
+            <p><b>Fats:</b><BR>
+                {{fat_needs[range_min]}} - {{fat_needs[range_max]}}% daily food's dry mass</P>
+            <p><b>Carbs:</b><BR>
+                {{carb_needs[range_min]}} - {{carb_needs[range_max]}}% daily food's dry mass</P>
+{% endblock %}
+{% endif %}

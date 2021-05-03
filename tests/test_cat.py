@@ -1,7 +1,7 @@
 import unittest
 
 from app import cat_calc
-from app.enums import CatActivities, Range, NumberNames, CatAges, ProteinNeeds
+from app.enums import CatActivities, Range, CatAges, ProteinNeeds
 from tests.test_base import TestBase
 
 

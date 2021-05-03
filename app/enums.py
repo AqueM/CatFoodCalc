@@ -1,22 +1,16 @@
 from enum import Enum
 
 
-class Nutrition(Enum):
-    protein = "protein"
-    fat = "fat"
-    carbs = "carbs"
-
-
 class Range(Enum):
     min = "min"
     max = "max"
     avg = "avg"
 
 
-class AnalyticalIngredients(Enum):
-    protein = Nutrition.protein
-    fat = Nutrition.fat
-    carbs = Nutrition.carbs
+class Nutrition(Enum):
+    protein = "protein"
+    fat = "fat"
+    carbs = "carbs"
     moisture = "moisture"
     ash = "ash"
     fibre = "fibre"
@@ -30,6 +24,9 @@ class CatAges(Enum):
     pregnant = 4
     mother = 5
     mother3 = 6
+
+
+kittens = [CatAges.kitten1, CatAges.kitten2, CatAges.kitten3]
 
 
 class CatActivities(Enum):

@@ -1,15 +1,15 @@
 import statistics
 
 from app import nutritional_values, food_requirements
-from app.enums import Range, ProteinNeeds, CatAges, CatActivities
+from app.enums import Range, ProteinNeeds, CatAges, CatActivities, kittens
 
 
 class Cat(object):
     def __init__(self, weight, age, activity):
-        self.activity = eval(activity)
+        self.activity = activity
         self.kcal_needs_per_kg = nutritional_values.kcal_by_activity[self.activity]
         self.weight = float(weight)
-        self.age = eval(age)
+        self.age = age
         self.age_modif = nutritional_values.age_modifier[self.age]
 
         # RER - Resting Energy Requirement (by weight only)
@@ -22,6 +22,9 @@ class Cat(object):
         self.der = self.calculate_der()
 
         self.protein_needs = self.calculate_protein_needs()
+        self.is_kitten = False
+        if self.age in kittens:
+            self.is_kitten = True
 
     def calculate_mer(self):
         mer = dict()
