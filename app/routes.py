@@ -9,6 +9,7 @@ from app.calculators import cat_calc, food_calc, rating_calc
 from app.enums import Range, ProteinNeeds, CatAges, CatActivities
 from app.reference_data.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
 from app.forms import FoodForm, CatForm
+import app.forms
 
 basic = {'title': labels.project_title,
          'year': labels.display_years()}
@@ -38,7 +39,6 @@ def food_calculator():
     dm = ProteinNeeds.dry_mass
     fat_needs = fat_needs_dry_mass
     carb_needs = carbs_needs_dry_mass
-
     form = FoodForm(request.form)
 
     weight = float(session['cat']['weight'])
@@ -47,16 +47,15 @@ def food_calculator():
     activity = eval(session['cat']['activity'])
     activity_label = labels.activity_labels[activity]
     cat = cat_calc.Cat(**session['cat'])
-    if form.food.validate_on_submit() and form.quality.validate_on_submit():
+    if form.validate_on_submit():
         food = {}
-        for key, value in form.food.data.items():
+        for key, value in form.data.items():
             if value is not None:
                 food[key] = str(value)
         session['food'] = food
-        pprint(form.data)
-        pprint(form.quality.data)
-        pprint(form.quality.get('quality'))
-        session['quality'] = form.getlist('quality')
+        pprint(form.food.data.items())
+        pprint(form.quality.data.items())
+        session['quality'] = form.quality.data
         return redirect(url_for('results'))
     return render_template("food_calc_form.html", **locals() | basic)
 

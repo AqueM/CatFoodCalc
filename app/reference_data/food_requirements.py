@@ -29,23 +29,23 @@ protein_needs_bodyweight = {
 # https://www.aafco.org/Portals/0/SiteContent/Regulatory/Committees/Pet-Food/Reports/Pet_Food_Report_2013_Midyear-Proposed_Revisions_to_AAFCO_Nutrient_Profiles.pdf
 # For foods with 4kcal/g calorie density
 
-adult_protein_needs_dry_mass = {CatActivities.indoor: 25,
-                                CatActivities.outdoor: 33}
-kitten_protein_needs_dry_mass = 28
-reproduction_protein_needs_dry_mass = 30
+adult_protein_needs_100g_dry_mass = {CatActivities.indoor: 25,
+                                     CatActivities.outdoor: 33}
+kitten_protein_needs_100g_dry_mass = 28
+reproduction_protein_needs_100g_dry_mass = 30
 
 protein_needs_dry_mass_by_age = {
-    CatAges.kitten1: kitten_protein_needs_dry_mass,
-    CatAges.kitten2: kitten_protein_needs_dry_mass,
-    CatAges.kitten3: kitten_protein_needs_dry_mass,
-    CatAges.adult: adult_protein_needs_dry_mass,
-    CatAges.pregnant: reproduction_protein_needs_dry_mass,
-    CatAges.mother: reproduction_protein_needs_dry_mass,
-    CatAges.mother3: reproduction_protein_needs_dry_mass,
+    CatAges.kitten1: kitten_protein_needs_100g_dry_mass,
+    CatAges.kitten2: kitten_protein_needs_100g_dry_mass,
+    CatAges.kitten3: kitten_protein_needs_100g_dry_mass,
+    CatAges.adult: adult_protein_needs_100g_dry_mass,
+    CatAges.pregnant: reproduction_protein_needs_100g_dry_mass,
+    CatAges.mother: reproduction_protein_needs_100g_dry_mass,
+    CatAges.mother3: reproduction_protein_needs_100g_dry_mass,
 }
 
-fat_needs_dry_mass = {Range.min: 20,
-                      Range.max: 50}
+fat_needs_dry_mass = {Range.min: 9,
+                      Range.max: 10}
 
 carbs_needs_dry_mass = {Range.min: 5,
                         Range.max: 10}

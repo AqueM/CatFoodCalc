@@ -10,6 +10,10 @@ activities = activities.items()
 ages = default | labels.age_labels
 ages = ages.items()
 
+food_data = ["protein", "fat", "fibre", "ash", "moisture"]
+food_quality = ["grains", "grains3", "plants", "plants3", "organs", "byproducts", "vitamins", "taurine",
+                "preservatives"]
+
 
 # Field names must match CatData(Enum)
 class CatData(FlaskForm):
@@ -66,6 +70,40 @@ class FoodQualityForm(FlaskForm):
 
 
 class FoodForm(FlaskForm):
-    food = FormField(FoodData)
-    quality = FormField(FoodQualityForm)
+    # food = FormField(FoodData)
+    # quality = FormField(FoodQualityForm)
+    protein = DecimalField("Protein %",
+                           validators=[InputRequired(message=labels.nutrition_empty_error),
+                                       NumberRange(min=0, max=100, message=labels.nutrition_invalid_error)],
+                           render_kw={"placeholder": "As per packaging label"})
+    fat = DecimalField("Fat %", validators=[InputRequired(message=labels.nutrition_empty_error),
+                                            NumberRange(min=0, max=100, message=labels.nutrition_invalid_error)],
+                       render_kw={"placeholder": "As per packaging label"})
+    fibre = DecimalField("Fibre %", validators=[InputRequired(message=labels.nutrition_empty_error),
+                                                NumberRange(min=0, max=100, message=labels.nutrition_invalid_error)],
+                         render_kw={"placeholder": "As per packaging label"})
+    ash = DecimalField("Ash %", validators=[InputRequired(message=labels.nutrition_empty_error),
+                                            NumberRange(min=0, max=100, message=labels.nutrition_invalid_error)],
+                       render_kw={"placeholder": "As per packaging label"})
+    moisture = DecimalField("Moisture %",
+                            validators=[NumberRange(min=0, max=100, message=labels.moisture_invalid_error), Optional()],
+                            render_kw={"placeholder": "As per packaging label"})
+    mass = DecimalField("Package size (g)",
+                        validators=[NumberRange(min=0, max=40000, message=labels.moisture_invalid_error), Optional()],
+                        render_kw={"placeholder": "As per packaging label"})
+    grains = BooleanField("Ingredients include grains or potatoes", validators=[Optional()])
+    grains3 = BooleanField("Grains/potatoes are within first 3 ingredients on the list", validators=[Optional()])
+    plants = BooleanField("Ingredients include other vegetables or fruit", validators=[Optional()])
+    plants3 = BooleanField("Vegetables/fruit are within first 3 ingredients on the list", validators=[Optional()])
+    organs = BooleanField("Ingredients include organs/variety meats", validators=[Optional()])
+    byproducts = BooleanField("Ingredients include animal by-products", validators=[Optional()])
+    vitamins = BooleanField("Ingredients include vitamins and minerals")
+    taurine = BooleanField("Ingredients include taurine")
+    preservatives = BooleanField("Ingredients include preservatives")
     submit_food = SubmitField('Calculate all >>')
+    data_fields = []
+    quality_fields = []
+    for input in food_data:
+        data_fields.append(eval(input))
+    for input in food_quality:
+        quality_fields.append(eval(input))

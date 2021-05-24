@@ -5,8 +5,6 @@
 {% block jumbo %}
 <form action="{{url_for('food_calculator')}}" method="POST">
     <div class="form">
-        {{ form.food.csrf_token }}
-        {{ form.quality.csrf_token() }}
         <div class="row" name="data">
             <div class="col-md-4"><h3>Cat's information</h3></div>
             <div class="col-md-4"><h3>Food information</h3></div>
@@ -23,12 +21,16 @@
             </div>
             <div class="col-md-4" name="inputFormFood">
                     <h4>Analytical ingredients</h4>
-                    {{ wtf.quick_form(form.food) }}
+                {% for field in form.data_fields %}
+                {{ wtf.form_field(field) }}
+                {% endfor %}
             </div>
             <div class="col-md-4" name="inputFoodQualityForm">
                 <h4>Ingredient quality</h4>
                 Check all that apply:<BR>
-                {{ wtf.quick_form(form.quality) }}
+                {% for field in form.quality_fields %}
+                {{ wtf.form_field(field) }}
+                {% endfor %}
 
             </div>
         </div>
@@ -67,13 +69,13 @@
             <p><b>Protein:</b><BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
                     {{cat.protein_needs[dm]}}/100g
-                    food</a>
+                    food's dry mass</a>
                 per day or
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
                     {{cat.protein_needs[bw]}}g</a> per day
             </p>
             <p><b>Fats:</b><BR>
-                {{fat_needs[range_min]}} - {{fat_needs[range_max]}}% daily food's dry mass</P>
+                {{fat_needs[range_min]}} - {{fat_needs[range_max]}}g per 100g food's dry mass</P>
             <p><b>Carbs:</b><BR>
                 {{carb_needs[range_min]}} - {{carb_needs[range_max]}}% daily food's dry mass</P>
 {% endblock %}

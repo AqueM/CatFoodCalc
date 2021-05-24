@@ -31,10 +31,9 @@ class Food(object):
         self.food_type = self.get_food_type()
         self.kcal_per_100g = self.calculate_digestible_energy_per_100g()
         self.dry_mass_perc = 100 - self.percentages[Nutrition.moisture]
+        self.dry_mass_protein = self.calculate_protein_in_100g_dm()
         self.mass = kwargs.get('mass', 0)
-        self.kcal_whole = None
-        if self.mass > 0:
-            self.kcal_whole = self.calculate_energy_whole()
+        self.kcal_whole = self.calculate_energy_whole()
 
     def calculate_carbs(self):
         return round(100 - sum(value for key, value in self.percentages.items() if key != Nutrition.carbs), 2)
@@ -68,4 +67,10 @@ class Food(object):
         return round(metabolic_energy_per_100, 2)
 
     def calculate_energy_whole(self):
-        return self.kcal_per_100g * self.mass / 100
+        if self.mass > 0:
+            return self.kcal_per_100g * self.mass / 100
+        else:
+            return None
+
+    def calculate_protein_in_100g_dm(self):
+        return (100 * self.percentages[Nutrition.protein]) / self.dry_mass_perc

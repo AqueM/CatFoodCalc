@@ -1,4 +1,5 @@
 import unittest
+from pprint import pprint
 
 
 def get_results(method, used_object):
@@ -11,12 +12,11 @@ def run_one_method(function, tested_class, test_data, test_results):
         expected = test_results[test_object][function]
         actual = get_results(function, used_object)
         print("Testing method {0} with test item {1}".format(function.__name__, test_object))
-        # unittest.TestCase().assertEqual(expected, actual,
-        #                                 "Failed testing method {0} for test item {1}".format(function, test_object))
+        unittest.TestCase().assertEqual(expected, actual,
+                                        "Failed testing method {0} for test item {1}".format(function, test_object))
 
 
 class TestBase(unittest.TestCase):
-
     def runTest(self):
         for function in self.methods_to_test:
             run_one_method(function, self.tested_class, self.test_data, self.test_results)
