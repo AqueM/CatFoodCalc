@@ -11,6 +11,7 @@ ages = default | labels.age_labels
 ages = ages.items()
 
 
+# Field names must match CatData(Enum)
 class CatData(FlaskForm):
     weight = DecimalField("Cat's weight (kg)",
                           validators=[InputRequired(message=labels.weight_error),
@@ -25,9 +26,10 @@ class CatData(FlaskForm):
 
 class CatForm(FlaskForm):
     cat = FormField(CatData)
-    submit_cat = SubmitField('Calculate >>')
+    submit_cat = SubmitField('Calculate cat needs >>')
 
 
+# Field names must match Nutrition(Enum)
 class FoodData(FlaskForm):
     protein = DecimalField("Protein %",
                            validators=[InputRequired(message=labels.nutrition_empty_error),
@@ -50,6 +52,7 @@ class FoodData(FlaskForm):
                         render_kw={"placeholder": "As per packaging label"})
 
 
+# Field names must match FoodRatings(Enum)
 class FoodQualityForm(FlaskForm):
     grains = BooleanField("Ingredients include grains or potatoes", validators=[Optional()])
     grains3 = BooleanField("Grains/potatoes are within first 3 ingredients on the list", validators=[Optional()])
@@ -65,4 +68,4 @@ class FoodQualityForm(FlaskForm):
 class FoodForm(FlaskForm):
     food = FormField(FoodData)
     quality = FormField(FoodQualityForm)
-    submit_food = SubmitField('Calculate >>')
+    submit_food = SubmitField('Calculate all >>')

@@ -16,6 +16,24 @@ class Nutrition(Enum):
     fibre = "fibre"
 
 
+class CatData(Enum):
+    weight = "weight"
+    age = "age"
+    activity = "activity"
+
+
+class FoodRatings(Enum):
+    grains = 'grains'
+    grains3 = 'grains3'
+    plants = 'plants'
+    plants3 = 'plants3'
+    organs = 'organs'
+    byproducts = 'byproducts'
+    vitamins = 'vitamins'
+    taurine = 'taurine'
+    preservatives = 'preservatives'
+
+
 class CatAges(Enum):
     kitten1 = 0
     kitten2 = 1

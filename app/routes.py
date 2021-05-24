@@ -1,10 +1,13 @@
+from pprint import pprint
+
 from flask import url_for, session
 from werkzeug.utils import redirect
 
 import app.labels as labels
-from app import flask_app, render_template, request, cat_calc
+from app import flask_app, render_template, request
+from app.calculators import cat_calc, food_calc, rating_calc
 from app.enums import Range, ProteinNeeds, CatAges, CatActivities
-from app.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
+from app.reference_data.food_requirements import fat_needs_dry_mass, carbs_needs_dry_mass
 from app.forms import FoodForm, CatForm
 
 basic = {'title': labels.project_title,
@@ -15,15 +18,19 @@ basic = {'title': labels.project_title,
 def calculator():
     form = CatForm(request.form)
     if form.submit_cat.data and form.validate_on_submit():
-        session['weight'] = str(form.cat.weight.data)
-        session['age'] = form.cat.age.data
-        session['activity'] = form.cat.activity.data
+        cat = {}
+        for key, value in form.cat.data.items():
+            cat[key] = str(value)
+        session['cat'] = cat
+        # session['cat'] = [str(form.cat.weight.data), form.cat.age.data, form.cat.activity.data]
         return redirect(url_for('food_calculator'))
     return render_template("cat_calc_form.html", **locals() | basic)
 
 
 @flask_app.route("/food-calc", methods=["GET", "POST"])
 def food_calculator():
+    if 'cat' not in session:
+        return render_template("error.html", **locals() | basic)
     range_min = Range.min
     range_max = Range.max
     range_avg = Range.avg
@@ -33,31 +40,40 @@ def food_calculator():
     carb_needs = carbs_needs_dry_mass
 
     form = FoodForm(request.form)
-    if ('weight' and 'age' and 'activity') not in session:
-        return render_template("error.html", **locals() | basic)
-    weight = float(session['weight'])
-    age = eval(session['age'])
+
+    weight = float(session['cat']['weight'])
+    age = eval(session['cat']['age'])
     age_label = labels.age_labels[age]
-    activity = eval(session['activity'])
+    activity = eval(session['cat']['activity'])
     activity_label = labels.activity_labels[activity]
-    cat = cat_calc.Cat(weight, age, activity)
+    cat = cat_calc.Cat(**session['cat'])
     if form.food.validate_on_submit() and form.quality.validate_on_submit():
-        food = [str(form.food.protein.data), str(form.food.fat.data),
-                str(form.food.fibre.data), str(form.food.ash.data),
-                str(form.food.moisture.data), str(form.food.mass.data)]
-        session['protein'] = str(form.food.protein.data)
-        session['fat'] = str(form.food.fat.data)
-        session['fibre'] = str(form.food.fibre.data)
-        session['ash'] = str(form.food.ash.data)
-        session['moisture'] = str(form.food.moisture.data)
-        session['mass'] = str(form.food.mass.data)
-        quality = [form.quality.data]
+        food = {}
+        for key, value in form.food.data.items():
+            if value is not None:
+                food[key] = str(value)
+        session['food'] = food
+        pprint(form.data)
+        pprint(form.quality.data)
+        pprint(form.quality.get('quality'))
+        session['quality'] = form.getlist('quality')
         return redirect(url_for('results'))
     return render_template("food_calc_form.html", **locals() | basic)
 
 
 @flask_app.route("/results", methods=["GET", "POST"])
 def results():
+    session['quality'].pop('csrf_token')
+    session['food'].pop('csrf_token')
+    food_data = {}
+    for key, value in session['food'].items():
+        food_data[key] = float(value)
+
+    cat = cat_calc.Cat(**session['cat'])
+    food = food_calc.Food(**food_data)
+    rating = rating_calc.FoodRating(cat, food, **session['quality'])
+
+    mark = rating.food_rating
     return render_template("results.html", **locals() | basic)
 
 

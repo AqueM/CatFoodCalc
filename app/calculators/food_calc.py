@@ -18,20 +18,21 @@ class Food(object):
     has_energy = [Nutrition.protein, Nutrition.fat,
                   Nutrition.carbs, Nutrition.fibre]
 
-    def __init__(self, protein, fat, fibre, ash, moisture=0, mass=0):
+    def __init__(self, **kwargs):
         # noinspection PyDictCreation
         self.percentages = {
-            Nutrition.protein: protein,
-            Nutrition.fat: fat,
-            Nutrition.fibre: fibre,
-            Nutrition.ash: ash,
-            Nutrition.moisture: moisture
+            Nutrition.protein: kwargs[Nutrition.protein.value],
+            Nutrition.fat: kwargs[Nutrition.fat.value],
+            Nutrition.fibre: kwargs[Nutrition.fibre.value],
+            Nutrition.ash: kwargs[Nutrition.ash.value],
+            Nutrition.moisture: kwargs.get(Nutrition.moisture.value, 0)
         }
         self.percentages[Nutrition.carbs] = self.calculate_carbs()
         self.food_type = self.get_food_type()
         self.kcal_per_100g = self.calculate_digestible_energy_per_100g()
         self.dry_mass_perc = 100 - self.percentages[Nutrition.moisture]
-        self.mass = mass
+        self.mass = kwargs.get('mass', 0)
+        self.kcal_whole = None
         if self.mass > 0:
             self.kcal_whole = self.calculate_energy_whole()
 
