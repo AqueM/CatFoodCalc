@@ -1,5 +1,3 @@
-import pprint
-
 from app.enums import ProteinNeeds, Range, Nutrition, FoodRatings
 
 

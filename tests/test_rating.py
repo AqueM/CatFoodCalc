@@ -1,7 +1,7 @@
 import unittest
 
 from app.calculators import rating_calc, cat_calc, food_calc
-from app.enums import CatActivities, CatAges, CatData, Range
+from app.enums import Range
 from tests import test_cat, test_food
 from tests.test_base import TestBase
 

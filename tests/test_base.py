@@ -1,5 +1,4 @@
 import unittest
-from pprint import pprint
 
 
 def get_results(method, used_object):
