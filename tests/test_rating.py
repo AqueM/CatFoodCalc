@@ -3,10 +3,10 @@ import unittest
 from app.calculators import rating_calc, cat_calc, food_calc
 from app.enums import Range
 from tests import test_cat, test_food
-from tests.test_base import TestBase
+from tests.test_base import TestTemplate
 
 
-class TestFoodRatingCalculations(TestBase):
+class TestFoodRatingCalculations(TestTemplate):
     test_data = {
         "medium range wet food": {'cat': cat_calc.Cat(**test_cat.TestCatCalculations.test_data[1]),
                                   'food': food_calc.Food(

@@ -2,10 +2,10 @@ import unittest
 
 from app.calculators import cat_calc
 from app.enums import CatActivities, Range, CatAges, ProteinNeeds, CatData
-from tests.test_base import TestBase
+from tests.test_base import TestTemplate
 
 
-class TestCatCalculations(TestBase):
+class TestCatCalculations(TestTemplate):
     test_data = {
         1: {CatData.weight.value: 4, CatData.age.value: CatAges.adult, CatData.activity.value: CatActivities.indoor},
         2: {CatData.weight.value: 6, CatData.age.value: CatAges.pregnant,

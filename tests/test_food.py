@@ -2,10 +2,10 @@ import unittest
 
 from app.calculators import food_calc
 from app.enums import FoodType, Nutrition
-from tests.test_base import TestBase
+from tests.test_base import TestTemplate
 
 
-class TestFoodCalculations(TestBase):
+class TestFoodCalculations(TestTemplate):
     test_data = {
         "Animonda Carny Multimeat Cocktail":
             {Nutrition.protein.value: 11.5, Nutrition.fat.value: 6.5,

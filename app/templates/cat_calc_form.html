@@ -5,7 +5,7 @@
 {% block jumbo %}
 <form action="/" method="POST">
     <div class="form">
-        {{ form.csrf_token }}
+        {{ cat_data_input_form.csrf_token }}
         <div class="row" name="data">
             <div class="col-md-4"><h3>Cat's information</h3></div>
             <div class="col-md-4"><h3>Food information</h3></div>
@@ -13,7 +13,9 @@
         </div>
         <div class="row" name="data">
             <div class="col-md-4" name="inputFormCat">
-                    {{ wtf.quick_form(form.cat) }}
+                {{ form.render_field(cat_data_input_form.weight) }}
+                {{ form.render_field(cat_data_input_form.activity) }}
+                {{ form.render_field(cat_data_input_form.age) }}
             </div>
             <div class="col-md-4" name="inputFormFood">
                     Enter cat's data to proceed.
@@ -23,7 +25,7 @@
         </div>
         <div class="row" name="submits">
                 <div class="col-md-4 d-flex justify-content-end">
-                    {{ form.submit_cat(class="btn btn-lg btn-success") }}
+                    {{ form.render_field(cat_data_input_form.submit_cat, class="btn btn-lg btn-success") }}
                 </div>
         </div>
     </div>

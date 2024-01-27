@@ -21,22 +21,22 @@
             </div>
             <div class="col-md-4" name="inputFormFood">
                     <h4>Analytical ingredients</h4>
-                {% for field in form.data_fields %}
-                {{ wtf.form_field(field) }}
+                {% for field in food_input_form.data_fields %}
+                {{ form.render_field(field) }}
                 {% endfor %}
             </div>
             <div class="col-md-4" name="inputFoodQualityForm">
                 <h4>Ingredient quality</h4>
                 Check all that apply:<BR>
-                {% for field in form.quality_fields %}
-                {{ wtf.form_field(field) }}
+                {% for field in food_input_form.quality_fields %}
+                {{ form.render_field(field) }}
                 {% endfor %}
 
             </div>
         </div>
         <div class="row justify-content-end" name="submits">
                 <div class="col-md-4 d-flex justify-content-end">
-                    {{ form.submit_food(class="btn btn-lg btn-success align-center") }}
+                    {{ food_input_form.submit_food(class="btn btn-lg btn-success align-center") }}
                 </div>
         </div>
     </div>

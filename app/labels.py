@@ -27,11 +27,15 @@ min_weight = 0.01
 
 weight_error = "Please provide your cat's weight as a decimal number."
 weight_invalid_error = "Cat weight must be between {0} and {1} kg.".format(min_weight, max_weight)
+list_error = "Please choose a value."
 age_empty_error = "Please select your cat's age."
 activity_empty_error = "Please select your cat's activity level."
 nutrition_empty_error = "Please provide required percentages."
 nutrition_invalid_error = "All input values must be numbers, and only numbers (no % needed)."
 moisture_invalid_error = "Moisture %% must be a number or left empty."
+
+placeholder_package = "As per package label."
+
 
 numbers_labels = {NumberNames.der: NumberNamesLong.der.value, NumberNames.mer: NumberNamesLong.mer.value}
 tooltips = {
