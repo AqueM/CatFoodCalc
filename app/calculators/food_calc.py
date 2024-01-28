@@ -1,7 +1,7 @@
 from app.enums import FoodType, Nutrition
 
 
-class Food(object):
+class Food():
     # Gross energy as per
     # FEDIAF Nutritional Guidelines (2019), as detailed in
     # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,

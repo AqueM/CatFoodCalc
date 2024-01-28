@@ -4,19 +4,13 @@ from app.reference_data import food_requirements, nutritional_values
 from app.enums import Range, ProteinNeeds, CatAges, kittens, CatData
 
 
-class Cat(object):
+class Cat():
     def __init__(self, weight, activity, age):
-        # if kwargs[CatData.activity.value].isInstanct(str):
-        #     kwargs[CatData.activity.value] = eval(kwargs[CatData.activity.value])
-        # self.activity = kwargs[CatData.activity.value]
-        # if type(kwargs[CatData.age.value]) == str:
-        #     kwargs[CatData.age.value] = eval(kwargs[CatData.age.value])
         self.weight = float(weight)
         self.age = age
         self.activity = activity
         self.age_modif = nutritional_values.age_modifier[self.age]
         self.kcal_needs_per_kg = nutritional_values.kcal_by_activity[self.activity]
-        # self.weight = float(kwargs[CatData.weight.value])
 
         # RER - Resting Energy Requirement (by weight only)
         self.rer_formula_by_weight = self.weight * nutritional_values.rer_value

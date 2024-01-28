@@ -1,7 +1,7 @@
 from app.enums import ProteinNeeds, Range, Nutrition, FoodRatings
 
 
-class FoodRating(object):
+class FoodRating():
     good_values = \
         [FoodRatings.organs.value, FoodRatings.vitamins.value, FoodRatings.taurine.value]
     bad_values = \

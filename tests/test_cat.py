@@ -4,34 +4,61 @@ from app.calculators import cat_calc
 from app.enums import CatActivities, Range, CatAges, ProteinNeeds, CatData
 from tests.test_base import TestTemplate
 
+weight_label = CatData.weight.value
+age_label = CatData.age.value
+activity_label = CatData.activity.value
 
-class TestCatCalculations(TestTemplate):
-    test_data = {
-        1: {CatData.weight.value: 4, CatData.age.value: CatAges.adult, CatData.activity.value: CatActivities.indoor},
-        2: {CatData.weight.value: 6, CatData.age.value: CatAges.pregnant,
-            CatData.activity.value: CatActivities.outdoor},
-        3: {CatData.weight.value: 2, CatData.age.value: CatAges.kitten1, CatData.activity.value: CatActivities.outdoor}}
-    test_results = {
-        1: {cat_calc.Cat.calculate_mer: {Range.min: 139, Range.max: 201, Range.avg: 170},
-            cat_calc.Cat.calculate_der: {Range.min: 139, Range.max: 201, Range.avg: 170},
-            cat_calc.Cat.calculate_protein_needs:
-                {ProteinNeeds.bodyweight: 20,
-                 ProteinNeeds.dry_mass: 25}},
-        2: {cat_calc.Cat.calculate_mer: {Range.min: 402, Range.max: 402, Range.avg: 402},
-            cat_calc.Cat.calculate_der: {Range.min: 563, Range.max: 563, Range.avg: 563},
-            cat_calc.Cat.calculate_protein_needs:
-                {ProteinNeeds.bodyweight: 54,
-                 ProteinNeeds.dry_mass: 30}},
-        3: {cat_calc.Cat.calculate_mer: {Range.min: 134, Range.max: 134, Range.avg: 134},
-            cat_calc.Cat.calculate_der: {Range.min: 268, Range.max: 335, Range.avg: 302},
-            cat_calc.Cat.calculate_protein_needs:
-                {ProteinNeeds.bodyweight: 18,
-                 ProteinNeeds.dry_mass: 28}},
-    }
+test_cases = {
+    1: "basic adult",
+    2: "scrambled data pregnant",
+    3: "basic kitten"
+}
+test_data = {
+    1: {weight_label: 4, age_label: CatAges.adult, activity_label: CatActivities.indoor},
+    2: {activity_label: CatActivities.outdoor, age_label: CatAges.pregnant, weight_label: 6},
+    3: {weight_label: 2, age_label: CatAges.kitten1, activity_label: CatActivities.outdoor}
+}
+test_results = {
+    1: {cat_calc.Cat.calculate_mer: {Range.min: 139, Range.max: 201, Range.avg: 170},
+        cat_calc.Cat.calculate_der: {Range.min: 139, Range.max: 201, Range.avg: 170},
+        cat_calc.Cat.calculate_protein_needs:
+            {ProteinNeeds.bodyweight: 20,
+             ProteinNeeds.dry_mass: 25}},
+    2: {cat_calc.Cat.calculate_mer: {Range.min: 402, Range.max: 402, Range.avg: 402},
+        cat_calc.Cat.calculate_der: {Range.min: 563, Range.max: 563, Range.avg: 563},
+        cat_calc.Cat.calculate_protein_needs:
+            {ProteinNeeds.bodyweight: 54,
+             ProteinNeeds.dry_mass: 30}},
+    3: {cat_calc.Cat.calculate_mer: {Range.min: 134, Range.max: 134, Range.avg: 134},
+        cat_calc.Cat.calculate_der: {Range.min: 268, Range.max: 335, Range.avg: 302},
+        cat_calc.Cat.calculate_protein_needs:
+            {ProteinNeeds.bodyweight: 18,
+             ProteinNeeds.dry_mass: 28}},
+}
 
-    def __init__(self, method_name='runTest'):
-        unittest.TestCase.__init__(self, method_name)
+
+class CatTests(TestTemplate):
+
+    def test_init(self):
+        print("Testing class constructor".format(__name__))
+        for case in test_cases:
+            print("Tested item: {0}... ".format(test_cases[case]), end="")
+            cat = cat_calc.Cat(**test_data[case])
+            self.assertEqual(cat.weight, test_data[case][weight_label])
+            self.assertEqual(cat.age, test_data[case][age_label])
+            self.assertEqual(cat.activity, test_data[case][activity_label])
+            print("PASS")
+        print("\n")
+
+    def test_methods(self):
+        self.test_data = test_data
+        self.test_results = test_results
         self.tested_class = cat_calc.Cat
         self.methods_to_test = [cat_calc.Cat.calculate_der,
                                 cat_calc.Cat.calculate_mer,
                                 cat_calc.Cat.calculate_protein_needs]
+        self.run_methods_test()
+
+
+if __name__ == '__main__':
+    unittest.main()

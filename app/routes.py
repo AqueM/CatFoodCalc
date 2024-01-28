@@ -28,8 +28,8 @@ def calculator():
 
 
 @flask_app.route("/food_data-calc", methods=["GET", "POST"])
-def food_calculator(cat_data):
-    if cat_data is None or cat_data is False:
+def food_calculator(**kwargs):
+    if kwargs.items.cat_data is None or kwargs.items.cat_data is False:
         print("right method wrong if")
         return render_template("error.html", **basic)
     range_min = Range.min
@@ -41,9 +41,9 @@ def food_calculator(cat_data):
     carb_needs = carbs_needs_dry_mass
     food_input_form = FoodDataForm(request.form)
 
-    weight = float(cat_data['weight'])
-    age_label = labels.age_labels[eval(cat_data['age'])]
-    activity_label = labels.activity_labels[eval(cat_data['activity'])]
+    weight = float(kwargs.items.cat_data['weight'])
+    age_label = labels.age_labels[eval(kwargs.items.cat_data['age'])]
+    activity_label = labels.activity_labels[eval(kwargs.items.cat_data['activity'])]
 
     if food_input_form.validate_on_submit():
         food_data = {}
@@ -58,22 +58,22 @@ def food_calculator(cat_data):
 
 
 @flask_app.route("/results", methods=["GET", "POST"])
-def results(food_data, quality, cat_data):
+def results(**kwargs):
     # session['quality'].pop('csrf_token')
     # session['food'].pop('csrf_token')
     # food_data = {}
     # for key, value in session['food'].items():
     #     food_data[key] = float(value)
 
-    weight = float(cat_data['weight'])
-    age = eval(cat_data['age'])
+    weight = float(kwargs.items.cat_data['weight'])
+    age = eval(kwargs.items.cat_data['age'])
     age_label = labels.age_labels[age]
-    activity = eval(cat_data['activity'])
+    activity = eval(kwargs.items.cat_data['activity'])
     activity_label = labels.activity_labels[activity]
     cat = cat_calc.Cat(weight, age, activity)
 
-    food = food_calc.Food(**food_data)
-    rating = rating_calc.FoodRating(cat, food, **quality)
+    food = food_calc.Food(kwargs.items.food_data)
+    rating = rating_calc.FoodRating(cat, food, kwargs.items.quality)
 
     mark = rating.food_rating
     return render_template("results.html", **locals() | basic)

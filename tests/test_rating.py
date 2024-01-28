@@ -8,15 +8,15 @@ from tests.test_base import TestTemplate
 
 class TestFoodRatingCalculations(TestTemplate):
     test_data = {
-        "medium range wet food": {'cat': cat_calc.Cat(**test_cat.TestCatCalculations.test_data[1]),
+        "medium range wet food": {'cat': cat_calc.Cat(**test_cat.MethodTestCatCalculations.test_data[1]),
                                   'food': food_calc.Food(
                                       **test_food.TestFoodCalculations.test_data["Animonda Carny Multimeat Cocktail"]),
                                   'organs': True},
-        "higher end wet food": {'cat': cat_calc.Cat(**test_cat.TestCatCalculations.test_data[2]),
+        "higher end wet food": {'cat': cat_calc.Cat(**test_cat.MethodTestCatCalculations.test_data[2]),
                                 'food': food_calc.Food(
                                     **test_food.TestFoodCalculations.test_data["MACs Heart & Liver"]),
                                 'taurine': True, 'organs': True, 'vitamins': True},
-        "dry kibble": {'cat': cat_calc.Cat(**test_cat.TestCatCalculations.test_data[2]),
+        "dry kibble": {'cat': cat_calc.Cat(**test_cat.MethodTestCatCalculations.test_data[2]),
                        'food': food_calc.Food(
                            **test_food.TestFoodCalculations.test_data["Purina Pro Plan Adult Urinary Tract "
                                                                       "Health Chicken & Rice Formula"]),
