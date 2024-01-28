@@ -45,6 +45,7 @@ class CatAges(Enum):
 
 
 kittens = [CatAges.kitten1, CatAges.kitten2, CatAges.kitten3]
+adults = [CatAges.adult, CatAges.pregnant, CatAges.mother, CatAges.mother3]
 
 
 class CatActivities(Enum):

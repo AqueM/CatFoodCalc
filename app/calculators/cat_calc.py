@@ -1,19 +1,19 @@
 import statistics
 
-from app.reference_data import food_requirements, nutritional_values
-from app.enums import Range, ProteinNeeds, CatAges, kittens, CatData
+from app.reference_data import food_requirements, nutritional_requirements
+from app.enums import Range, ProteinNeeds, CatAges, kittens
 
 
-class Cat():
+class Cat:
     def __init__(self, weight, activity, age):
         self.weight = float(weight)
         self.age = age
         self.activity = activity
-        self.age_modif = nutritional_values.age_modifier[self.age]
-        self.kcal_needs_per_kg = nutritional_values.kcal_by_activity[self.activity]
+        self.age_modif = nutritional_requirements.age_modifier[self.age]
+        self.kcal_needs_per_kg = nutritional_requirements.kcal_by_activity[self.activity]
 
         # RER - Resting Energy Requirement (by weight only)
-        self.rer_formula_by_weight = self.weight * nutritional_values.rer_value
+        self.rer_formula_by_weight = round(self.weight * nutritional_requirements.rer_value, 2)
 
         # MER - Maintenance Energy Requirement (by weight and activity)
         self.mer = self.calculate_mer()

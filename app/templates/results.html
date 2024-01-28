@@ -3,42 +3,50 @@
 
 {% block jumbo %}
 <p class="lead">Results page</p>
-<p class="lead">{{mark}}<BR>
-Because of this, I decided it would be neat to have a tool that could calculate your cat's needs based on scientific knowledge.</p>
-<p class="lead">This concept evolved over time to include a couple more features and ended up as this little app. Hope you enjoy it.</p>
+<p class="lead"><B>Food rating:</B> {{mark}}<BR></p>
+<p class="lead">
+  {{explanation}}
+</p>
 {% endblock %}
 
 {% block col1 %}
-<h4>Sources</h4>
-<p>Scientific papers and other sources used to determine cat needs, food nutritional values
-  and mathematical formulas used in the making of his app:</p>
-<ul>
-  <li><a href="http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf">
-    Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs (FEDIAF, 2019)
-  </a></li>
-  <li><a href="http://www.fediaf.org/self-regulation/nutrition.html">
-    FEDIAF Nutrition Guide
-  </a></li>
-  <li><a href="https://www.msdvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-and-related-diseases-of-small-animals">
-    NRC Guidelines (2006)
-  </a></li>
-  <li><a href="https://www.aafco.org/Portals/0/SiteContent/Regulatory/Committees/Pet-Food/Reports/Pet_Food_Report_2013_Midyear-Proposed_Revisions_to_AAFCO_Nutrient_Profiles.pdf">
-    AAFCO Methods For Substantiating Nutritional Adequacy Of Dog And Cat Foods (2014)
-  </a></li>
-</ul>
+            <h4>Cat's energy requirements</h4>
+            <p>{{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}}
+                kcal (average: {{cat.der[range_avg]}} kcal){% endif %} per day
+            </p>
+            <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
+                                 balance energy expenditure in order to maintain body size,
+                body composition and a level of necessary and desirable physical activity
+                consistent with long-term good health.</p>
+            <h4>Cat's nutrient requirements</h4>
+            <p><b>Protein:</b><BR>
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
+                    {{cat.protein_needs[dm]}}/100g
+                    food's dry mass</a>
+                per day or
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
+                    {{cat.protein_needs[bw]}}g</a> per day
+            </p>
 {% endblock %}
 
 {% block col2 %}
-<h4>Special thanks to</h4>
-<ul>
-  <li><a href="https://github.com/tymik">Jan Tymiński</a> for co-piloting this project</li>
-  <li><a href="https://github.com/hardpenguin">Hard Penguin</a> for code reviews</li>
-  <li><a href="https://github.com/katheroine">Katarzyna Krasińska</a> for moral and coding support</li>
-</ul>
+            <h4>Food information</h4>
+            <p><b>Analytical ingredients:</b><BR>
+                <ul>
+                  <li>Protein: {[food.percentages[protein]}}%</li>
+                  <li>Fat: {[food.percentages[fat]}}%</li>
+                  <li>Fibre: {[food.percentages[fibre]}}%</li>
+                  <li>Ash: {[food.percentages[ash]}}%</li>
+                  <li>Moisture: {[food.percentages[moisture]}}%</li>
+                  <li>Carbs: {[food.percentages[carbs]}}%</li>
+                </ul>
+            <h4>Additional information</h4>
+                <ul>
+                  <li>Kcal per 100g: {[food.percentages[protein]}}</li>
+                </ul>
 {% endblock %}
 
 {% block col3 %}
 <h4>More</h4>
-<p>If you'd like to know more about me, you can check out my Beacons page
-  <a href="https://beacons.page/drosk">here</a></p>
+<p>{{}}</p>
 {% endblock %}

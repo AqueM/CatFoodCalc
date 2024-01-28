@@ -7,4 +7,4 @@ Jinja2>=2.11.3
 MarkupSafe>=1.1.1
 werkzeug>=2.3.8
 
-WTForms~=2.3.3
+WTForms

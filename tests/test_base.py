@@ -20,7 +20,7 @@ class TestTemplate(unittest.TestCase):
         for function in self.methods_to_test:
             print("Testing method {0}: ".format(function.__name__))
             self.run_one_method(function, self.tested_class, self.test_data, self.test_results)
-            # print("\n")
+            print("\n")
 
     @staticmethod
     def run_one_method(method, tested_class, test_data, test_results):
