@@ -1,4 +1,11 @@
 <!doctype html>
+{% set navigation_bar = [
+    ('/', 'index', 'Calculator'),
+    ('/about', 'about', 'About'),
+    ('https://github.com/AqueM/CatFoodCalc', 'github', 'GitHub')
+] -%}
+{% import "bootstrap/form.html" as form %}
+{% set active_page = active_page|default('index') -%}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -6,20 +13,27 @@
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
-<!--        <link href="https://getbootstrap.com/docs/3.3/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
+    <!--        <link href="https://getbootstrap.com/docs/3.3/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">-->
     <title>{% block page %}{% endblock %} {{title}}</title>
     <style>
         body {
     padding-top: 20px;
     padding-bottom: 20px;
     }
-    .marketing {
+        .marketing {
     padding-right: 20px;
     padding-left: 20px;
     }
-    footer {
+        footer {
     padding-right: 20px;
     padding-left: 20px;
+    }
+        .required:before {
+      content:"* ";
+      color:red;
+    }
+        .help-block{
+        color:red;
     }
     </style>
 </head>
@@ -43,37 +57,33 @@
     <div class="header clearfix">
         <nav>
             <ul class="nav nav-pills justify-content-end">
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link active">Home</a></li>
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link">About</a></li>
-                <li class="nav-item" role="presentation"><a href="#" class="nav-link">Contact</a></li>
+                {% for href, id, caption in navigation_bar %}
+                <li class="nav-item" role="presentation"><a class="nav-link
+                        {% if id == active_page %} active{% endif %}"
+                        {% if id == "github" %} target="_blank"{% endif %}
+                    href="{{ href|e }}">{{ caption|e }}</a></li>
+                {% endfor %}
             </ul>
         </nav>
         <h3 class="text-muted">{{title}}</h3>
+        <p class="lead">Online tool to calculate how much your cat should eat based on their weight,
+            activity level and age<br>
+        as well as the quality of food you have.</p>
     </div>
     <div class="jumbotron">
-        <div class="row">
-            <div name="inputForm">
-                {% block form %}{% endblock %}
-            </div>
-            <div class="col-md-4">
-                <p class="lead">{% block lead %}Test description{% endblock %}</p>
-            </div>
-        </div>
+        {% block jumbo %}
+        {% endblock %}
     </div>
-    <div class="row marketing">
-        <div class="col-md-4" name="catData">
-            {% block catData %}{% endblock %}
-        </div>
-        <div class="col-md-4" name="catData2">
-            {% block nutriData %}{% endblock %}
-        </div>
-        <div class="col-md-4" name="catData3">
-            {% block foodData %}{% endblock %}
-        </div>
+    <div class="container" name="container-lower">
+    {% block container2 %}
+    {% endblock %}
+    {% block columns %}
+    {% endblock %}
     </div>
-    <footer class="footer">
-        <p>© 2021 <a href="https://about-aque.carrd.co/">Aque</a></p>
-    </footer>
-</div>
+    <div class="container" name="container-lowest">
+        <footer class="footer">
+            <p>© {{year}} <a href="https://beacons.page/drosk">Dorota "Aque" Roskowska</a></p>
+        </footer>
+    </div>
 </body>
 </html>

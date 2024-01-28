@@ -1,0 +1,52 @@
+{% extends 'base_3col.html' %}
+{% set active_page = "index" %}
+
+{% block jumbo %}
+<p class="lead">Results page</p>
+<p class="lead"><B>Food rating:</B> {{mark}}<BR></p>
+<p class="lead">
+  {{explanation}}
+</p>
+{% endblock %}
+
+{% block col1 %}
+            <h4>Cat's energy requirements</h4>
+            <p>{{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}}
+                kcal (average: {{cat.der[range_avg]}} kcal){% endif %} per day
+            </p>
+            <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
+                                 balance energy expenditure in order to maintain body size,
+                body composition and a level of necessary and desirable physical activity
+                consistent with long-term good health.</p>
+            <h4>Cat's nutrient requirements</h4>
+            <p><b>Protein:</b><BR>
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
+                    {{cat.protein_needs[dm]}}/100g
+                    food's dry mass</a>
+                per day or
+                <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
+                    {{cat.protein_needs[bw]}}g</a> per day
+            </p>
+{% endblock %}
+
+{% block col2 %}
+            <h4>Food information</h4>
+            <p><b>Analytical ingredients:</b><BR>
+                <ul>
+                  <li>Protein: {[food.percentages[protein]}}%</li>
+                  <li>Fat: {[food.percentages[fat]}}%</li>
+                  <li>Fibre: {[food.percentages[fibre]}}%</li>
+                  <li>Ash: {[food.percentages[ash]}}%</li>
+                  <li>Moisture: {[food.percentages[moisture]}}%</li>
+                  <li>Carbs: {[food.percentages[carbs]}}%</li>
+                </ul>
+            <h4>Additional information</h4>
+                <ul>
+                  <li>Kcal per 100g: {[food.percentages[protein]}}</li>
+                </ul>
+{% endblock %}
+
+{% block col3 %}
+<h4>More</h4>
+<p>{{}}</p>
+{% endblock %}

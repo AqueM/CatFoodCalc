@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% set active_page = "index" %}
+{% block header %}CatFoodCalculator{% endblock %}
+
+{% block jumbo %}
+<form action="/" method="POST">
+    <div class="form">
+        {{ cat_data_input_form.csrf_token }}
+        <div class="row" name="data">
+            <div class="col-md-4"><h3>Cat's information</h3></div>
+            <div class="col-md-4"><h3>Food information</h3></div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row" name="data">
+            <div class="col-md-4" name="inputFormCat">
+                {{ form.render_field(cat_data_input_form.weight) }}
+                {{ form.render_field(cat_data_input_form.activity) }}
+                {{ form.render_field(cat_data_input_form.age) }}
+            </div>
+            <div class="col-md-4" name="inputFormFood">
+                    Enter cat's data to proceed.
+            </div>
+            <div class="col-md-4" name="inputFoodQualityForm">
+            </div>
+        </div>
+        <div class="row" name="submits">
+                <div class="col-md-4 d-flex justify-content-end">
+                    {{ form.render_field(cat_data_input_form.submit_cat, class="btn btn-lg btn-success") }}
+                </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
