@@ -18,7 +18,7 @@
                 <P><B>Age: </B>{{age_label}}</P>
                 <p class="lead">Still need some data to calculate everything.
                 Please input information about the food in the following form.</p>
-                <p>To change the cat's data, click <a href="/">here.</a></p>
+                <p>To try again with different cat data, click <a href="/">here.</a></p>
             </div>
             <div class="col-md-4" name="inputFormFood">
                     <h4>Analytical ingredients</h4>
@@ -58,7 +58,7 @@
         <h3>Results so far</h3>
         {% if cat.is_kitten is true %}
         <p><b>Your cat is a kitten!</b><br>
-            These values are only suggestions of how much your cat should eat <b>at the very least</b><br>
+            These values are only suggestions of how much your cat should eat <b>at the very least.</b><br>
         - kittens should eat as much as they want without limits, since they're growing.
         Please do not limit your cat's food intake until it is fully grown.</p>
         {% endif %}
@@ -66,8 +66,9 @@
 {% endblock %}
 {% block col1 %}
             <h4>Energy requirements</h4>
-            <p>{{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}}
-                kcal (average: {{cat.der[range_avg]}} kcal){% endif %} per day
+            <p><B>{{cat.der[ranges[0]]}} kcal
+                {% if cat.der[ranges[0]] != cat.der[ranges[2]] %} - {{cat.der[ranges[2]]}} kcal per day</B>
+                <BR>(average: {{cat.der[ranges[1]]}} kcal per day){% endif %}
             </p>
             <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
                                  balance energy expenditure in order to maintain body size,
@@ -78,15 +79,14 @@
             <h4>Nutrient requirements</h4>
             <p><b>Protein:</b><BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
-                    {{cat.protein_needs[dm]}}/100g
-                    food's dry mass</a>
-                per day or
+                    {{protein_needs[1]}}g/100g</a> per day
+                <BR>or<BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
-                    {{cat.protein_needs[bw]}}g</a> per day
+                    {{protein_needs[0]}}g</a> per day
             </p>
             <p><b>Fats:</b><BR>
-                {{fat_needs[range_min]}} - {{fat_needs[range_max]}}g per 100g food's dry mass</P>
+                {{fat_needs[ranges[0]]}}g - {{fat_needs[ranges[2]]}}g per 100g of food's dry mass</P>
             <p><b>Carbs:</b><BR>
-                {{carb_needs[range_min]}} - {{carb_needs[range_max]}}% daily food's dry mass</P>
+                {{carb_needs[ranges[0]]}}% - {{carb_needs[ranges[2]]}}% daily of food's dry mass</P>
 {% endblock %}
 {% endif %}

@@ -14,13 +14,6 @@ has_energy = [protein, fat,
 
 
 class Food:
-    # Gross energy as per
-    # FEDIAF Nutritional Guidelines (2019), as detailed in
-    # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
-    # 7.2.2.1. Gross energy, Table VII-5.
-    # Predicted gross energy values of protein, fat and carbohydrate
-    # http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
-
     def __init__(self, **kwargs):
         self.percentages = {protein: float(kwargs[protein]),
                             fat: float(kwargs[fat]),
@@ -28,36 +21,82 @@ class Food:
                             ash: float(kwargs[ash]),
                             moisture: float(kwargs.get(moisture, 0)),
                             carbs: 0}
+        self.mass = kwargs.get(mass, 0)
+
         self.food_type = self.get_food_type()
         self.percentages[carbs] = self.calculate_carbs()
-        self.kcal_per_100g = self.calculate_digestible_energy_per_100g()
-        self.dry_mass_perc = 100 - self.percentages[moisture]
-        self.dry_mass_protein = self.calculate_protein_in_100g_dm()
-        self.mass = kwargs.get(mass, 0)
-        self.kcal_whole = self.calculate_energy_whole()
 
-    def calculate_carbs(self):
-        return round(100 - sum(value for key, value in self.percentages.items() if key != carbs), 2)
+        self.kcal_100g = self.calculate_digestible_energy_per_100g()
+        self.percentage_dry_mass = self.calculate_dm_percentage()
+        self.protein_100g_dry_mass = self.calculate_protein_in_100g_dm()
+        self.kcal_package = self.calculate_energy_whole_package()
 
-    def calculate_kcal_gross(self):
+    def calculate_carbs(self) -> float:
+        """
+        Calculates and sets carbohydrate %
+        by working out how much % is left after totaling other ingredient percentages
+
+        Returns
+        -------
+        float
+        """
+        self.percentages[carbs] = round(100 - sum(value for key, value in self.percentages.items() if key != carbs), 2)
+        if self.percentages[carbs] < 0:
+            self.percentages[carbs] = 0
+        return self.percentages[carbs]
+
+    def calculate_kcal_gross_per_100g(self) -> float:
+        """
+        Calculates total energy in kcal based on
+        the percentages of digested analytical ingredients (fat, protein, carbs, fibre) and their kcal per gram
+
+        Gross energy calculations as per
+        FEDIAF Nutritional Guidelines (2019), as detailed in
+        Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
+        7.2.2.1. Gross energy, Table VII-5.
+        Predicted gross energy values of protein, fat and carbohydrate
+        http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
+
+
+        Returns
+        -------
+        float
+        """
         gross_energy = 0
         for food_item in gross_energy_values.keys():
-            gross_energy = gross_energy + self.percentages[food_item] * gross_energy_values[food_item]
+            if food_item in has_energy:
+                gross_energy += self.percentages[food_item] * gross_energy_values[food_item]
         return round(gross_energy, 2)
 
-    def get_food_type(self):
-        food_type = FoodType.wet
-        if self.percentages[moisture] < 10:
-            food_type = FoodType.dry
-        return food_type
+    def get_food_type(self) -> FoodType:
+        """
+        Sets FoodType based on moisture %
 
-    # Formulas and numbers for energy calculation come from
-    # FEDIAF Nutritional Guidelines(2019), as detailed in
-    # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
-    # 7.2.2.2. Metabolisable energy
-    # http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
-    def calculate_digestible_energy_per_100g(self):
-        gross_energy = self.calculate_kcal_gross()
+        Returns
+        -------
+        FoodType
+        """
+        self.food_type = FoodType.wet
+        if self.percentages[moisture] < 10:
+            self.food_type = FoodType.dry
+        return self.food_type
+
+    def calculate_digestible_energy_per_100g(self) -> float:
+        """
+        Calculates and sets kcal amount per 100g for self.
+        -------
+        Formulas and numbers for digestible energy calculation come from
+        FEDIAF Nutritional Guidelines(2019),
+        as detailed in
+        Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
+        7.2.2.2. Metabolisable energy
+        http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
+
+        Returns
+        -------        
+        float
+        """
+        gross_energy = self.calculate_kcal_gross_per_100g()
 
         fibre_dry_mass_perc = \
             (self.percentages[fibre] * self.percentages[moisture]) / 100
@@ -65,13 +104,42 @@ class Food:
         digestibility_modif = 87.9 - (0.88 * fibre_dry_mass_perc)
         digestible_energy = (gross_energy * digestibility_modif) / 100
         metabolic_energy_per_100 = digestible_energy - (0.77 * self.percentages[protein])
-        return round(metabolic_energy_per_100, 2)
+        self.kcal_100g = round(metabolic_energy_per_100, 2)
+        return self.kcal_100g
 
-    def calculate_energy_whole(self):
+    def calculate_energy_whole_package(self) -> None | float:
+        """
+        Calculates and sets kcal amount per package based on kcal per 100g and total package mass
+
+        Returns
+        -------
+        float if mass is non-zero
+        None is mass is > 0
+
+        """
         if self.mass > 0:
-            return self.kcal_per_100g * self.mass / 100
+            return self.kcal_100g * self.mass / 100
         else:
             return None
 
-    def calculate_protein_in_100g_dm(self):
-        return round((100 * self.percentages[protein]) / self.dry_mass_perc, 0)
+    def calculate_dm_percentage(self) -> float:
+        """
+        Calculates and sets % of dry mass based on moisture %
+
+        Returns
+        -------
+        float
+        """
+        self.percentage_dry_mass = 100 - self.percentages[moisture]
+        return self.percentage_dry_mass
+
+    def calculate_protein_in_100g_dm(self) -> float:
+        """
+        Calculates and sets % of protein in dry mass based on total protein % and dry mass %
+
+        Returns
+        -------
+        float
+        """
+        self.protein_100g_dry_mass = round((100 * self.percentages[protein]) / self.percentage_dry_mass, 0)
+        return self.protein_100g_dry_mass

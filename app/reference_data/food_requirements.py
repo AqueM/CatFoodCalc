@@ -1,11 +1,9 @@
-import statistics
-
 # Protein requirements per kg cat body weight for adult cats as per
 # NRC guidelines (2006) as detailed in
 # https://www.msdvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-and-related-diseases-of-small-animals
 # https://www.nap.edu/catalog/10668/nutrient-requirements-of-dogs-and-cats
 # Assuming fully digestible protein source
-from app.enums import CatAges, Range, CatActivities, Nutrition
+from app.enums import CatAges, CatActivities, Range
 
 protein_needs_bodyweight = {
     CatAges.kitten1: 9,
@@ -29,19 +27,19 @@ protein_needs_bodyweight = {
 # https://www.aafco.org/Portals/0/SiteContent/Regulatory/Committees/Pet-Food/Reports/Pet_Food_Report_2013_Midyear-Proposed_Revisions_to_AAFCO_Nutrient_Profiles.pdf
 # For foods with 4kcal/g calorie density
 
-adult_protein_needs_100g_dry_mass = {CatActivities.indoor: 25,
-                                     CatActivities.outdoor: 33}
-kitten_protein_needs_100g_dry_mass = 28
-reproduction_protein_needs_100g_dry_mass = 30
+adult_protein_needs_100g_drymass = {CatActivities.indoor: 25,
+                                    CatActivities.outdoor: 33}
+kitten_protein_needs_100g_drymass = 28
+reproduction_protein_needs_100g_drymass = 30
 
-protein_needs_dry_mass_by_age = {
-    CatAges.kitten1: kitten_protein_needs_100g_dry_mass,
-    CatAges.kitten2: kitten_protein_needs_100g_dry_mass,
-    CatAges.kitten3: kitten_protein_needs_100g_dry_mass,
-    CatAges.adult: adult_protein_needs_100g_dry_mass,
-    CatAges.pregnant: reproduction_protein_needs_100g_dry_mass,
-    CatAges.mother: reproduction_protein_needs_100g_dry_mass,
-    CatAges.mother3: reproduction_protein_needs_100g_dry_mass,
+protein_needs_drymass_by_age = {
+    CatAges.kitten1: kitten_protein_needs_100g_drymass,
+    CatAges.kitten2: kitten_protein_needs_100g_drymass,
+    CatAges.kitten3: kitten_protein_needs_100g_drymass,
+    CatAges.adult: adult_protein_needs_100g_drymass,
+    CatAges.pregnant: reproduction_protein_needs_100g_drymass,
+    CatAges.mother: reproduction_protein_needs_100g_drymass,
+    CatAges.mother3: reproduction_protein_needs_100g_drymass,
 }
 
 fat_needs_dry_mass = {Range.min: 9,
@@ -49,4 +47,3 @@ fat_needs_dry_mass = {Range.min: 9,
 
 carbs_needs_dry_mass = {Range.min: 5,
                         Range.max: 10}
-

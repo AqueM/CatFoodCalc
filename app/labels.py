@@ -1,26 +1,27 @@
 from datetime import datetime
 
-from app.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds
+from app.enums import CatAges, CatActivities, NumberNames, NumberNamesLong, ProteinNeeds, Nutrition
 
 age_labels = {
-    CatAges.kitten1: "kitten under 4 months",
-    CatAges.kitten2: "kitten under 9 months",
-    CatAges.kitten3: "kitten under 12 months",
-    CatAges.adult: "adult cat",
-    CatAges.pregnant: "pregnant cat",
-    CatAges.mother: "lactating cat (under 3 kittens)",
-    CatAges.mother3: "lactating cat (3+ kittens)"
+    CatAges.kitten1.name: "kitten under 4 months",
+    CatAges.kitten2.name: "kitten under 9 months",
+    CatAges.kitten3.name: "kitten under 12 months",
+    CatAges.adult.name: "adult cat",
+    CatAges.pregnant.name: "pregnant cat",
+    CatAges.mother.name: "lactating cat (under 3 kittens)",
+    CatAges.mother3.name: "lactating cat (3+ kittens)"
 }
 activity_labels = {
-    CatActivities.indoor: "neutered / inactive / indoor cats",
-    CatActivities.outdoor: "active / outdoor cats"
+    CatActivities.indoor.name: "neutered / inactive / indoor cats",
+    CatActivities.outdoor.name: "active / outdoor cats"
 }
 default_dropdown_label = "-- Please choose an option --"
 
 input_labels = {"weight": "Weight (kg)", "weight_placeholder": "Enter the cat's weight", "age": "Age",
                 "activity": "Activity level", "submit": "Calculate »",
                 "food_placeholder": "As per packaging label",
-                "protein": "Protein %", "fat": "Fat %", "fibre": "Fibre %", "ash": "Ash %", "moisture": "Moisture %"}
+                Nutrition.protein.value: "Protein %", Nutrition.fat.value: "Fat %", Nutrition.fibre.value: "Fibre %",
+                Nutrition.ash.value: "Ash %", Nutrition.moisture.value: "Moisture %"}
 
 max_weight = 50
 min_weight = 0.01
@@ -45,11 +46,11 @@ tooltips = {
                      "balance energy expenditure in order to maintain body size, body composition and a level of "
                      "necessary and desirable physical activity consistent with long-term good health."}
 per_day = " per day"
-dm_label = " daily food's dry mass"
+dm_label = "daily food's dry mass"
 
 requirements_tooltips = {
     ProteinNeeds.bodyweight: "Calculated from bodyweight",
-    ProteinNeeds.dry_mass: "Calculated by" + dm_label
+    ProteinNeeds.dry_mass: "Calculated by " + dm_label
 }
 
 project_title = "Cat Food Calculator"

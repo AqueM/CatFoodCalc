@@ -3,6 +3,7 @@ from wtforms import DecimalField, SelectField, SubmitField, BooleanField, FormFi
 from wtforms.validators import NumberRange, NoneOf, Optional, InputRequired, DataRequired
 
 from app import labels
+from app.enums import Nutrition, FoodRatings
 
 default = {"default": "-- Please choose an option --"}
 activities = default | labels.activity_labels
@@ -10,9 +11,12 @@ activities = activities.items()
 ages = default | labels.age_labels
 ages = ages.items()
 
-food_data = ["protein", "fat", "fibre", "ash", "moisture"]
-food_quality_data = ["grains", "grains3", "plants", "plants3", "organs", "byproducts", "vitamins", "taurine",
-                     "preservatives"]
+food_data = [Nutrition.protein.value, Nutrition.fat.value,
+             Nutrition.fibre.value, Nutrition.ash.value,
+             Nutrition.moisture.value]
+food_quality_data = [FoodRatings.grains, FoodRatings.grains3.value, FoodRatings.plants.value,
+                     FoodRatings.plants3.value, FoodRatings.organs.value, FoodRatings.byproducts.value,
+                     FoodRatings.vitamins.value, FoodRatings.taurine.value, FoodRatings.preservatives.value]
 
 
 # Field names must match CatData(Enum)

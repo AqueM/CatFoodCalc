@@ -9,6 +9,7 @@ fat = Nutrition.fat.value
 fibre = Nutrition.fibre.value
 ash = Nutrition.ash.value
 moisture = Nutrition.moisture.value
+carbs = Nutrition.carbs.value
 mass = 'mass'
 
 test_cases = {
@@ -31,19 +32,19 @@ test_data = {
 test_results = {
     1: {
         food_calc.Food.calculate_carbs: 0.7,
-        food_calc.Food.calculate_kcal_gross: 131.57,
+        food_calc.Food.calculate_kcal_gross_per_100g: 131.57,
         food_calc.Food.calculate_digestible_energy_per_100g: 106.34,
         food_calc.Food.calculate_protein_in_100g_dm: 55,
         food_calc.Food.get_food_type: FoodType.wet},
     2: {
         food_calc.Food.calculate_carbs: 3.1,
-        food_calc.Food.calculate_kcal_gross: 144,
+        food_calc.Food.calculate_kcal_gross_per_100g: 144,
         food_calc.Food.calculate_digestible_energy_per_100g: 117.78,
         food_calc.Food.calculate_protein_in_100g_dm: 45,
         food_calc.Food.get_food_type: FoodType.wet},
     3: {
         food_calc.Food.calculate_carbs: 46.8,
-        food_calc.Food.calculate_kcal_gross: 508.38,
+        food_calc.Food.calculate_kcal_gross_per_100g: 508.38,
         food_calc.Food.calculate_digestible_energy_per_100g: 423,
         food_calc.Food.calculate_protein_in_100g_dm: 31,
         food_calc.Food.get_food_type: FoodType.dry}
@@ -69,7 +70,7 @@ class TestFoodCalculations(TestTemplate):
         self.test_results = test_results
         self.tested_class = food_calc.Food
         self.methods_to_test = [food_calc.Food.calculate_carbs,
-                                food_calc.Food.calculate_kcal_gross,
+                                food_calc.Food.calculate_kcal_gross_per_100g,
                                 food_calc.Food.calculate_digestible_energy_per_100g,
                                 food_calc.Food.calculate_protein_in_100g_dm,
                                 food_calc.Food.get_food_type]

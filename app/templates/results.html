@@ -2,51 +2,68 @@
 {% set active_page = "index" %}
 
 {% block jumbo %}
-<p class="lead">Results page</p>
-<p class="lead"><B>Food rating:</B> {{mark}}<BR></p>
-<p class="lead">
-  {{explanation}}
-</p>
+            <p class="lead">
+                <B>Results</B>
+            </p>
+            <p class="lead">
+                Food rating: {{food_rating.rating}} / 5 ☆<BR>
+            </p>
+            <p class="lead">
+<!--                {% autoescape false %}-->
+                {{food_rating.comments}}
+<!--                 {% endautoescape %}-->
+            </p>
 {% endblock %}
 
 {% block col1 %}
             <h4>Cat's energy requirements</h4>
-            <p>{{cat.der[range_min]}} kcal{% if cat.der[range_min] != cat.der[range_max] %} - {{cat.der[range_max]}}
-                kcal (average: {{cat.der[range_avg]}} kcal){% endif %} per day
+            <p><B>{{cat.der[ranges[0]]}} kcal
+                {% if cat.der[ranges[0]] != cat.der[ranges[2]] %} - {{cat.der[ranges[2]]}} kcal per day</B>
+                <BR>(average: {{cat.der[ranges[1]]}} kcal per day){% endif %}
             </p>
             <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
-                                 balance energy expenditure in order to maintain body size,
-                body composition and a level of necessary and desirable physical activity
-                consistent with long-term good health.</p>
+                                             balance energy expenditure in order to maintain body size,
+                            body composition and a level of necessary and desirable physical activity
+                            consistent with long-term good health.</p>
             <h4>Cat's nutrient requirements</h4>
             <p><b>Protein:</b><BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
-                    {{cat.protein_needs[dm]}}/100g
-                    food's dry mass</a>
-                per day or
+                    {{protein_needs[1]}}g/100g</a> per day
+                <BR>or<BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
-                    {{cat.protein_needs[bw]}}g</a> per day
+                    {{protein_needs[0]}}g</a> per day
             </p>
+            <p><b>Fats:</b><BR>
+                {{fat_needs[ranges[0]]}}g - {{fat_needs[ranges[2]]}}g per 100g food's dry mass</P>
+            <p><b>Carbs:</b><BR>
+                {{carb_needs[ranges[0]]}}% - {{carb_needs[ranges[2]]}}% daily food's dry mass</P>
 {% endblock %}
 
 {% block col2 %}
             <h4>Food information</h4>
             <p><b>Analytical ingredients:</b><BR>
                 <ul>
-                  <li>Protein: {[food.percentages[protein]}}%</li>
-                  <li>Fat: {[food.percentages[fat]}}%</li>
-                  <li>Fibre: {[food.percentages[fibre]}}%</li>
-                  <li>Ash: {[food.percentages[ash]}}%</li>
-                  <li>Moisture: {[food.percentages[moisture]}}%</li>
-                  <li>Carbs: {[food.percentages[carbs]}}%</li>
+                  <li>Protein: {{food.percentages['protein']}}%</li>
+                  <li>Fat: {{food.percentages['fat']}}%</li>
+                  <li>Fibre: {{food.percentages['fibre']}}%</li>
+                  <li>Ash: {{food.percentages['ash']}}%</li>
+                  <li>Moisture: {{food.percentages['moisture']}}%</li>
+                  <li>Carbs: {{food.percentages['carbs']}}%</li>
                 </ul>
-            <h4>Additional information</h4>
+            <H5>Additional information</H5>
                 <ul>
-                  <li>Kcal per 100g: {[food.percentages[protein]}}</li>
+                  <li>Kcal per 100g: {{food.kcal_per_100g}}</li>
                 </ul>
 {% endblock %}
 
 {% block col3 %}
-<h4>More</h4>
-<p>{{}}</p>
+<P>test?</P>
+            <h4>Portions information</h4>
+                <p>{{food_rating.portion_comment}}</p>
+            {% if cat.is_kitten is true %}
+                <p><b>Your cat is a kitten!</b><br>
+                    These values are only suggestions of how much your cat should eat <b>at the very least.</b><br>
+                - kittens should eat as much as they want without limits, since they're growing.
+                Please do not limit your cat's food intake until it is fully grown.</p>
+                {% endif %}
 {% endblock %}

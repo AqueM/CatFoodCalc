@@ -1,7 +1,7 @@
 import unittest
 
 from app.calculators import cat_calc
-from app.enums import CatActivities, Range, CatAges, ProteinNeeds, CatData
+from app.enums import CatActivities, CatAges, ProteinNeeds, Range
 from tests.test_base import TestTemplate
 
 test_cases = {
@@ -10,9 +10,9 @@ test_cases = {
     3: "basic kitten"
 }
 
-weight = CatData.weight.value
-age = CatData.age.value
-activity = CatData.activity.value
+weight = 'weight'
+age = 'age'
+activity = 'activity'
 age_modif = 'age_modif'
 is_kitten = 'is_kitten'
 rer = 'rer'

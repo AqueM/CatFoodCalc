@@ -16,12 +16,6 @@ class Nutrition(Enum):
     fibre = "fibre"
 
 
-class CatData(Enum):
-    weight = "weight"
-    age = "age"
-    activity = "activity"
-
-
 class FoodRatings(Enum):
     grains = 'grains'
     grains3 = 'grains3'
@@ -56,7 +50,7 @@ class CatActivities(Enum):
 class NumberNames(Enum):
     mer = "MER"
     der = "DER"
-    protein_needs = Nutrition.protein
+    protein_needs = Nutrition.protein.value
 
 
 class NumberNamesLong(Enum):
@@ -65,8 +59,8 @@ class NumberNamesLong(Enum):
 
 
 class ProteinNeeds(Enum):
-    bodyweight = 1
-    dry_mass = 2
+    bodyweight = 0
+    dry_mass = 1
 
 
 class FoodType(Enum):
