@@ -21,62 +21,64 @@ test_data = {
     3: {'cat': cat_calc.Cat(**test_cat.test_data[3]),
         'food': food_calc.Food(
             **test_food.test_data[3]),
-        'quality_data': {'grains': True, 'grains3': True, 'byproducts': True,
-                         'taurine': True, 'vitamins': True, 'preservatives': True}
+        'quality_data': {'grains3': True, 'plants': True, 'plants3': True,
+                         'organs': False, 'byproducts': True, 'vitamins': False,
+                         'taurine': True, 'preservatives': True}
         },
     4: {'cat': cat_calc.Cat(**test_cat.test_data[1]),
         'food': food_calc.Food(
             **test_food.test_data[3]),
-        'quality_data': {'grains3': False, 'plants': False, 'plants3': False,
-                         'organs': False, 'byproducts': False, 'vitamins': False,
+        'quality_data': {'grains': True, 'grains3': False, 'plants': True, 'plants3': False,
+                         'organs': False, 'byproducts': True, 'vitamins': False,
                          'taurine': True, 'preservatives': False}
         }
 }
 test_results = {
     1: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 174,
         rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 214,
-        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 131.0,
-                                                                   Range.max: 189.0,
-                                                                   Range.avg: 160},
+        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 134,
+                                                                   Range.max: 194,
+                                                                   Range.avg: 164},
         rating_calc.FoodRating.determine_kcal_protein_compatibility: True,
-        # rating_calc.FoodRating.determine_too_caloric_food: False,
+        rating_calc.FoodRating.determine_too_caloric_food: False,
         rating_calc.FoodRating.determine_food_quality: 8,
         rating_calc.FoodRating.calculate_portion_as_package_fraction: {Range.min: 0.3,
-                                                                       Range.max: 0.5},
-        rating_calc.FoodRating.calculate_days_per_package: 2.5,
+                                                                       Range.max: 0.5,
+                                                                       Range.avg: 0.4},
+        rating_calc.FoodRating.calculate_days_per_package: 2.4,
         rating_calc.FoodRating.calculate_days_per_100g: 0.6},
 
     2: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 500,
         rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 279,
-        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 478.0,
-                                                                   Range.max: 478.0,
-                                                                   Range.avg: 478},
+        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 528,
+                                                                   Range.max: 528,
+                                                                   Range.avg: 528},
         rating_calc.FoodRating.determine_kcal_protein_compatibility: True,
-        # rating_calc.FoodRating.determine_too_caloric_food: True,
+        rating_calc.FoodRating.determine_too_caloric_food: True,
         rating_calc.FoodRating.determine_food_quality: 10,
         rating_calc.FoodRating.calculate_portion_as_package_fraction: None,
         rating_calc.FoodRating.calculate_days_per_package: None,
         rating_calc.FoodRating.calculate_days_per_100g: 0.2},
 
-    3: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 174,
-        rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 97,
-        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 133.0, Range.max: 133.0, Range.avg: 133},
-        rating_calc.FoodRating.determine_kcal_protein_compatibility: False,
-        # rating_calc.FoodRating.determine_too_caloric_food: True,
-        rating_calc.FoodRating.determine_food_quality: 4,
+    3: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 58,
+        rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 90,
+        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 105, Range.max: 132, Range.avg: 118},
+        rating_calc.FoodRating.determine_kcal_protein_compatibility: True,
+        rating_calc.FoodRating.determine_too_caloric_food: True,
+        rating_calc.FoodRating.determine_food_quality: 2,
         rating_calc.FoodRating.calculate_portion_as_package_fraction: None,
-        rating_calc.FoodRating.calculate_days_per_package: 11.3,
+        rating_calc.FoodRating.calculate_days_per_package: 12.6,
         rating_calc.FoodRating.calculate_days_per_100g: 0.8},
 
-    4: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 174,
-        rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 97,
-        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 133.0, Range.max: 133.0, Range.avg: 133},
-        rating_calc.FoodRating.determine_kcal_protein_compatibility: False,
-        # rating_calc.FoodRating.determine_too_caloric_food: True,
+    4: {rating_calc.FoodRating.calculate_portion_by_protein_needs_bw: 65,
+        rating_calc.FoodRating.calculate_portion_by_protein_needs_dm: 81,
+        rating_calc.FoodRating.calculate_portion_by_energy_needs: {Range.min: 55, Range.max: 79, Range.avg: 67},
+        rating_calc.FoodRating.determine_kcal_protein_compatibility: True,
+        rating_calc.FoodRating.determine_too_caloric_food: False,
         rating_calc.FoodRating.determine_food_quality: 4,
         rating_calc.FoodRating.calculate_portion_as_package_fraction: None,
-        rating_calc.FoodRating.calculate_days_per_package: 11.3,
-        rating_calc.FoodRating.calculate_days_per_100g: 0.8}
+        rating_calc.FoodRating.calculate_days_per_package: 22.4,
+        rating_calc.FoodRating.calculate_days_per_100g: 1.5}
 }
 
 
@@ -87,14 +89,14 @@ class TestFoodRatingCalculations(TestTemplate):
         self.test_results = test_results
         self.tested_class = rating_calc.FoodRating
         self.methods_to_test = [
-            # rating_calc.FoodRating.calculate_portion_by_energy_needs,
-            # rating_calc.FoodRating.calculate_portion_by_protein_needs_bw,
-            # rating_calc.FoodRating.calculate_portion_by_protein_needs_dm,
+            rating_calc.FoodRating.calculate_portion_by_energy_needs,
+            rating_calc.FoodRating.calculate_portion_by_protein_needs_bw,
+            rating_calc.FoodRating.calculate_portion_by_protein_needs_dm,
             rating_calc.FoodRating.determine_kcal_protein_compatibility,
-            # rating_calc.FoodRating.determine_too_caloric_food,
-            # rating_calc.FoodRating.determine_food_quality,
-            # rating_calc.FoodRating.calculate_portion_as_package_fraction,
-            # rating_calc.FoodRating.calculate_days_per_package,
-            # rating_calc.FoodRating.calculate_days_per_100g
+            rating_calc.FoodRating.determine_too_caloric_food,
+            rating_calc.FoodRating.determine_food_quality,
+            rating_calc.FoodRating.calculate_portion_as_package_fraction,
+            rating_calc.FoodRating.calculate_days_per_package,
+            rating_calc.FoodRating.calculate_days_per_100g
         ]
         self.run_methods_test()

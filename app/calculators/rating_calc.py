@@ -1,7 +1,6 @@
 import statistics
 
-from app.enums import ProteinNeeds, FoodRatings, FoodType, Range, Nutrition, CatActivities
-from app.reference_data.food_requirements import adult_protein_needs_100g_drymass
+from app.enums import ProteinNeeds, FoodRatings, FoodType, Range, Nutrition
 
 good_values = \
     [FoodRatings.organs.value, FoodRatings.vitamins.value, FoodRatings.taurine.value]
@@ -14,9 +13,10 @@ plant_vars = \
     [FoodRatings.grains.value, FoodRatings.plants.value,
      FoodRatings.grains3.value, FoodRatings.plants3.value]
 
+too_caloric = ("The food is too caloric for your cat. If aiming for fulfilling the cat's protein needs, "
+               "it may cause weight gain.")
 not_adequate = ("The food does not have enough protein even in a maximum caloric portion. "
-                "This might cause malnutrition if the cat is fed according to calorie needs, "
-                "or weight gain if fed according to protein needs. ")
+                "This might cause malnutrition.")
 too_dry = ("The food has too little moisture in it. As cats don't drink much and rely on food for water intake, "
            "this might lead to kidney issues. ")
 quality_plants = ("The food has a lot of plants in it. Cats are carnivores and "
@@ -25,8 +25,9 @@ quality_plants = ("The food has a lot of plants in it. Cats are carnivores and "
 quality_meat = "The food contains low-quality meat ingredients that are better avoided."
 quality_taurine = ("The food lacks a taurine source - an essential micronutrient for cats that "
                    "needs to be supplemented for pet cats who don't eat enough variety meats. ")
-portion_comment_empty = ("A single {0} package of this food will last {1} days for your cat. "
-                         "A daily portion is {2}g.")
+portion_comment_size = "A single {0}g package of this food will last {1} days for your cat."
+portion_comment_daily = "A daily portion is about {0}g."
+portion_comment_fraction = "It's roughly {0} of the package."
 
 
 class FoodRating:
@@ -41,14 +42,14 @@ class FoodRating:
         self.portion_by_protein_dm = self.calculate_portion_by_protein_needs_dm()
         self.portion_by_package = self.calculate_portion_as_package_fraction()
 
-        # self.is_caloric = self.determine_too_caloric_food()
+        self.is_caloric = self.determine_too_caloric_food()
         self.has_enough_protein = self.determine_kcal_protein_compatibility()
-        self.rating = self.determine_food_quality()
+        self.food_rating = self.determine_food_quality()
         self.comments_list = self.assemble_comments()
 
         self.portions_per_package = self.calculate_days_per_package()
         self.portions_per_100g = self.calculate_days_per_100g()
-        self.portion_comment = self.assemble_portion_comment()
+        self.portion_comment_list = self.assemble_portion_comment()
 
     def calculate_portion_by_energy_needs(self) -> dict:
         """
@@ -62,9 +63,10 @@ class FoodRating:
             Range.min: round((self.cat.der[Range.min] * 100) / self.food.kcal_100g),
             Range.max: round((self.cat.der[Range.max] * 100) / self.food.kcal_100g),
         }
-        self.portion_by_kcal[Range.avg] = round(statistics.mean(
-            [self.portion_by_kcal[Range.min],
-             self.portion_by_kcal[Range.max]]), 0)
+        self.portion_by_kcal[Range.avg] = \
+            round(
+                statistics.mean([self.portion_by_kcal[Range.min], self.portion_by_kcal[Range.max]]
+                                ))
         return self.portion_by_kcal
 
     def calculate_portion_by_protein_needs_bw(self) -> float:
@@ -77,8 +79,7 @@ class FoodRating:
         """
         self.portion_by_protein_bw = (
             round((self.cat.protein_grams_needed[ProteinNeeds.bodyweight] * 100)
-                  / self.food.percentages[Nutrition.protein.value],
-                  0))
+                  / self.food.percentages[Nutrition.protein.value]))
         return self.portion_by_protein_bw
 
     def calculate_portion_by_protein_needs_dm(self) -> float:
@@ -91,9 +92,9 @@ class FoodRating:
         """
         # calculate how much of the dry mass would fill the dry mass protein requirements
         grams_protein_dm = round((self.cat.protein_grams_needed[ProteinNeeds.dry_mass] * 100)
-                                 / self.food.protein_100g_dry_mass, 0)
+                                 / self.food.protein_100g_dry_mass)
         # calculate how much food mass will fill the dry mass protein requirements - will be different for wet food
-        self.portion_by_protein_dm = round((100 * grams_protein_dm) / self.food.percentage_dry_mass, 0)
+        self.portion_by_protein_dm = round((100 * grams_protein_dm) / self.food.percentage_dry_mass)
         return self.portion_by_protein_dm
 
     def determine_kcal_protein_compatibility(self) -> bool:
@@ -107,48 +108,26 @@ class FoodRating:
         """
         self.has_enough_protein = False
         # check if max portion gives enough protein
-        # by body weight
-        print("grams to eat to fulfil needs")
-        print("dm ", self.portion_by_protein_dm, "bw ", self.portion_by_protein_bw, "kcal min ",
-              self.portion_by_kcal[Range.min], "kcal max ", self.portion_by_kcal[Range.max])
-
         if (self.portion_by_protein_bw <= self.portion_by_kcal[Range.max]) or (
                 self.portion_by_protein_dm <= self.portion_by_kcal[Range.max]):
             self.has_enough_protein = True
-            if (self.portion_by_kcal[Range.min] > self.portion_by_protein_bw) or (
-                    self.portion_by_kcal[Range.min] > self.portion_by_protein_dm):
-                print("FAT")
-
-        # if self.portion_by_kcal[Range.min] <= self.portion_by_protein_bw <= self.portion_by_kcal[Range.max]:
-        #     self.has_enough_protein = True
-        # # by dry mass
-        # elif self.portion_by_kcal[Range.min] <= self.portion_by_protein_dm <= self.portion_by_kcal[Range.max]:
-        #     self.has_enough_protein = True
-        # # for everybody else, min and max values are usually the same, so just check if it has enough protein
-        # else:
-        #     # check if enough protein by body weight
-        #     if self.portion_by_kcal[Range.avg] >= self.portion_by_protein_bw:
-        #         self.has_enough_protein = True
-        #     # if not, check if enough protein by dry mass
-        #     elif self.portion_by_kcal[Range.avg] >= self.portion_by_protein_dm:
-        #         self.has_enough_protein = True
         return self.has_enough_protein
 
-    # def determine_too_caloric_food(self) -> bool:
-    #     """
-    #     Sets a bool based on if food fits the portion range by comparing portions by protein
-    #     against maximum portion by kcal
-    #
-    #     Returns
-    #     -------
-    #     bool
-    #     """
-    #     self.is_caloric = False
-    #     if self.portion_by_protein_bw > self.portion_by_kcal[Range.max]:
-    #         self.is_caloric = True
-    #     if self.portion_by_protein_dm > self.portion_by_kcal[Range.max]:
-    #         self.is_caloric = True
-    #     return self.is_caloric
+    def determine_too_caloric_food(self) -> bool:
+        """
+        Sets a bool based on if food fits the portion range by comparing portions by protein
+        against maximum portion by kcal
+
+        Returns
+        -------
+        bool
+        """
+        self.is_caloric = False
+        # check if max kcal portion is bigger than protein needs (have to overeat to reach nutrition goals)
+        if (self.portion_by_kcal[Range.max] > self.portion_by_protein_bw) and (
+                self.portion_by_kcal[Range.max] > self.portion_by_protein_dm):
+            self.is_caloric = True
+        return self.is_caloric
 
     def determine_food_quality(self) -> int:
         """
@@ -159,21 +138,22 @@ class FoodRating:
         -------
         int between 0 and 10
         """
-        food_rating = 5
+        self.food_rating = 5
         if self.has_enough_protein:
-            food_rating += 1
+            self.food_rating += 1
         if self.food.food_type is FoodType.wet:
-            food_rating += 1
-        for key in self.rating_values:
-            if key in good_values:  # max +3
-                food_rating += 1
-            elif key in bad_values:  # max -4
-                food_rating -= 1
-            elif key in very_bad_values:  # max -2
-                food_rating -= 1
-        if 0 > food_rating:
-            food_rating = 0
-        return food_rating
+            self.food_rating += 1
+        for key, value in self.rating_values.items():
+            if value is True:
+                if key in good_values:  # max +3
+                    self.food_rating += 1
+                elif key in bad_values:  # max -4
+                    self.food_rating -= 1
+                elif key in very_bad_values:  # max -2
+                    self.food_rating -= 1
+        if 0 > self.food_rating:
+            self.food_rating = 0
+        return self.food_rating
 
     def calculate_portion_as_package_fraction(self) -> dict | None:
         """
@@ -188,9 +168,10 @@ class FoodRating:
         or
         None if mass for food object was not provided or not < 500
         """
-        if self.food.kcal_package is not None and self.food.mass < 500:
+        if self.food.kcal_package is not None and self.food.mass <= 500:
             return {Range.min: round(self.portion_by_kcal[Range.min] / self.food.mass, 1),
-                    Range.max: round(self.portion_by_kcal[Range.max] / self.food.mass, 1)}
+                    Range.max: round(self.portion_by_kcal[Range.max] / self.food.mass, 1),
+                    Range.avg: round(self.portion_by_kcal[Range.avg] / self.food.mass, 1)}
         else:
             return None
 
@@ -258,15 +239,9 @@ class FoodRating:
             if (FoodRatings.taurine.value not in self.rating_values
                     or self.rating_values[FoodRatings.taurine.value] is False):
                 self.comments_list.append(quality_taurine)
-        # placeholder comment if no other comments are added
-        if not self.comments_list:
-            self.comments_list.append("A pretty ordinary kind of cat food.")
         return self.comments_list
-        # transform into a single string
-        # newline = "\n"
-        # comments = newline.join(self.comments_list)
 
-    def assemble_portion_comment(self) -> str:
+    def assemble_portion_comment(self) -> list[str]:
         """
          Sets a comment about the portioning of food
 
@@ -274,13 +249,20 @@ class FoodRating:
         -------
          string
          """
-        self.portion_comment = "Couldn't calculate portion information for this food."
-        if self.portions_per_package != 0:
-            self.portion_comment = (
-                portion_comment_empty.format(self.food.mass, str(self.portions_per_package),
-                                             str(self.portion_by_kcal[Range.avg])))
+        self.portion_comment_list = []
+        if self.portions_per_package != 0 and self.portions_per_package is not None:
+            self.portion_comment_list.append(
+                portion_comment_size.format(self.food.mass, str(self.portions_per_package)))
+            self.portion_comment_list.append(
+                portion_comment_daily.format(self.portion_by_kcal[Range.avg]))
+            if self.portion_by_package is not None:
+                self.portion_comment_list.append(
+                    portion_comment_fraction.format(self.portion_by_package[Range.avg])
+                )
         else:
-            self.portion_comment = portion_comment_empty.format("100g",
-                                                                str(self.portions_per_100g),
-                                                                str(self.portion_by_kcal[Range.avg]))
-        return self.portion_comment
+            self.portion_comment_list.append(
+                portion_comment_daily.format(self.portion_by_kcal[Range.avg])
+            )
+        if not self.portion_comment_list:
+            self.portion_comment_list.append("Couldn't calculate portion information for this food.")
+        return self.portion_comment_list

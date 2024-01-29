@@ -32,20 +32,20 @@ test_data = {
 test_results = {
     1: {
         food_calc.Food.calculate_carbs: 0.7,
-        food_calc.Food.calculate_kcal_gross_per_100g: 131.57,
-        food_calc.Food.calculate_digestible_energy_per_100g: 106.34,
+        food_calc.Food.calculate_kcal_gross_per_100g: 128.7,
+        food_calc.Food.calculate_digestible_energy_per_100g: 103.82,
         food_calc.Food.calculate_protein_in_100g_dm: 55,
         food_calc.Food.get_food_type: FoodType.wet},
     2: {
         food_calc.Food.calculate_carbs: 3.1,
-        food_calc.Food.calculate_kcal_gross_per_100g: 144,
-        food_calc.Food.calculate_digestible_energy_per_100g: 117.78,
+        food_calc.Food.calculate_kcal_gross_per_100g: 131.29,
+        food_calc.Food.calculate_digestible_energy_per_100g: 106.65,
         food_calc.Food.calculate_protein_in_100g_dm: 45,
         food_calc.Food.get_food_type: FoodType.wet},
     3: {
         food_calc.Food.calculate_carbs: 46.8,
-        food_calc.Food.calculate_kcal_gross_per_100g: 508.38,
-        food_calc.Food.calculate_digestible_energy_per_100g: 423,
+        food_calc.Food.calculate_kcal_gross_per_100g: 316.5,
+        food_calc.Food.calculate_digestible_energy_per_100g: 254.33,
         food_calc.Food.calculate_protein_in_100g_dm: 31,
         food_calc.Food.get_food_type: FoodType.dry}
 }

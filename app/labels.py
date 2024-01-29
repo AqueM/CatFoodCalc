@@ -12,8 +12,8 @@ age_labels = {
     CatAges.mother3.name: "lactating cat (3+ kittens)"
 }
 activity_labels = {
-    CatActivities.indoor.name: "neutered / inactive / indoor cats",
-    CatActivities.outdoor.name: "active / outdoor cats"
+    CatActivities.indoor.name: "neutered / inactive / indoor",
+    CatActivities.outdoor.name: "active / outdoor"
 }
 default_dropdown_label = "-- Please choose an option --"
 

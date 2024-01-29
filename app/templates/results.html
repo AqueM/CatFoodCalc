@@ -1,18 +1,36 @@
-{% extends 'base_3col.html' %}
+{% extends 'base_2col.html' %}
 {% set active_page = "index" %}
 
 {% block jumbo %}
-            <p class="lead">
-                <B>Results</B>
+<div class="row" name="data">
+    <h4>Results</h4>
+</div>
+<div class="row" name="data">
+    <div class="col" name="ratings">
+        <p class="lead">
+            Food rating: {{food_rating.food_rating}} / 10 ☆
             </p>
-            <p class="lead">
-                Food rating: {{food_rating.rating}} / 5 ☆<BR>
+        <p>
+        <ul>
+            {% for comment in food_rating.comments_list %}
+            <li>{{comment}}</li>
+            {% endfor %}
+        </ul>
             </p>
-            <p class="lead">
-<!--                {% autoescape false %}-->
-                {{food_rating.comments}}
-<!--                 {% endautoescape %}-->
-            </p>
+    </div>
+    <div class="col" name="portions">
+        <h4>Portions information</h4>
+        {% for comment in food_rating.portion_comment_list %}
+        {{comment}}<BR>
+        {% endfor %}
+        {% if cat.is_kitten is true %}
+        <p><b>Your cat is a kitten!</b><br>
+            These values are only suggestions of how much your cat should eat <b>at the very least.</b><br>
+            - kittens should eat as much as they want without limits, since they're growing.
+            Please do not limit your cat's food intake until it is fully grown.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
 
 {% block col1 %}
@@ -21,27 +39,23 @@
                 {% if cat.der[ranges[0]] != cat.der[ranges[2]] %} - {{cat.der[ranges[2]]}} kcal per day</B>
                 <BR>(average: {{cat.der[ranges[1]]}} kcal per day){% endif %}
             </p>
-            <p><b>Daily Energy Requirement (DER)</b> is the amount of food energy needed by an animal to
-                                             balance energy expenditure in order to maintain body size,
-                            body composition and a level of necessary and desirable physical activity
-                            consistent with long-term good health.</p>
-            <h4>Cat's nutrient requirements</h4>
-            <p><b>Protein:</b><BR>
+<h4>Cat's nutrient guidelines</h4>
+<p><b>Protein requirements</b><BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by food's dry mass">
                     {{protein_needs[1]}}g/100g</a> per day
                 <BR>or<BR>
                 <a data-placement="top" data-toggle="tooltip" href="#" title="Calculated by cat's bodyweight">
                     {{protein_needs[0]}}g</a> per day
             </p>
-            <p><b>Fats:</b><BR>
-                {{fat_needs[ranges[0]]}}g - {{fat_needs[ranges[2]]}}g per 100g food's dry mass</P>
-            <p><b>Carbs:</b><BR>
-                {{carb_needs[ranges[0]]}}% - {{carb_needs[ranges[2]]}}% daily food's dry mass</P>
+<p><b>Fats requirements</b><BR>
+    {{fat_needs[ranges[0]]}}g - {{fat_needs[ranges[2]]}}g per 100g of food's dry mass</P>
+<p><b>Carbs guidelines</b><BR>
+    {{carb_needs[ranges[0]]}}% - {{carb_needs[ranges[2]]}}% daily of food's dry mass maximum</P>
 {% endblock %}
 
 {% block col2 %}
-            <h4>Food information</h4>
-            <p><b>Analytical ingredients:</b><BR>
+<h4>Food data</h4>
+<p><b>Analytical ingredients</b><BR>
                 <ul>
                   <li>Protein: {{food.percentages['protein']}}%</li>
                   <li>Fat: {{food.percentages['fat']}}%</li>
@@ -50,20 +64,8 @@
                   <li>Moisture: {{food.percentages['moisture']}}%</li>
                   <li>Carbs: {{food.percentages['carbs']}}%</li>
                 </ul>
-            <H5>Additional information</H5>
+<H6>Other</H6>
                 <ul>
-                  <li>Kcal per 100g: {{food.kcal_per_100g}}</li>
+                    <li>Kcal per 100g: {{food.kcal_100g}}</li>
                 </ul>
-{% endblock %}
-
-{% block col3 %}
-<P>test?</P>
-            <h4>Portions information</h4>
-                <p>{{food_rating.portion_comment}}</p>
-            {% if cat.is_kitten is true %}
-                <p><b>Your cat is a kitten!</b><br>
-                    These values are only suggestions of how much your cat should eat <b>at the very least.</b><br>
-                - kittens should eat as much as they want without limits, since they're growing.
-                Please do not limit your cat's food intake until it is fully grown.</p>
-                {% endif %}
 {% endblock %}

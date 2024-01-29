@@ -47,7 +47,7 @@ def food_calculator():
     age = CatAges[cat_data[2]]
     age_label = labels.age_labels[age.name]
 
-    cat = cat_calc.Cat(weight, activity, age)
+    cat = cat_calc.Cat(weight=weight, activity=activity, age=age)
 
     food_data = {}
     global quality_data
@@ -64,9 +64,10 @@ def food_calculator():
                 continue
             if value is not None:
                 if key in forms.food_data:
-                    food_data[key] = str(value)
+                    food_data[str(key)] = str(value)
                 if key in forms.food_quality_data:
-                    quality_data[key] = bool(value)
+                    quality_data[str(key)] = bool(value)
+        print(quality_data)
         food = food_calc.Food(**food_data)
         return redirect(url_for('results',   **context))
     return render_template("food_calc_form.html", cat=cat,
@@ -79,11 +80,10 @@ def results():
     global food
     fat_needs = reqs.fat_needs_dry_mass
     carb_needs = reqs.carbs_needs_dry_mass
-    protein_needs = [cat.protein_needs[ProteinNeeds.bodyweight], cat.protein_needs[ProteinNeeds.dry_mass]]
+    protein_needs = [cat.protein_grams_needed[ProteinNeeds.bodyweight], cat.protein_grams_needed[ProteinNeeds.dry_mass]]
 
     ranges = [Range.min, Range.avg, Range.max]
-    food_rating = rating_calc.FoodRating(cat, food, quality_data)
-    # print(quality_data)
+    food_rating = rating_calc.FoodRating(cat=cat, food=food, quality_data=quality_data)
     return render_template("results.html", cat=cat, food=food,
                            **locals() | context)
 

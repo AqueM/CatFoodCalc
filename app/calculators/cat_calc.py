@@ -1,7 +1,7 @@
 import statistics
 
-from app.reference_data import food_requirements, nutritional_requirements
 from app.enums import Range, ProteinNeeds, CatAges, kittens
+from app.reference_data import food_requirements, nutritional_requirements
 
 
 class Cat:
@@ -41,8 +41,8 @@ class Cat:
         """
         self.mer = {}
         for key in Range:
-            self.mer[key] = round(self.rer_formula_by_weight * self.kcal_needs_per_kg[key], 0)
-        self.mer[Range.avg] = round(statistics.mean([self.mer[Range.min], self.mer[Range.max]]), 0)
+            self.mer[key] = round(self.rer_formula_by_weight * self.kcal_needs_per_kg[key])
+        self.mer[Range.avg] = round(statistics.mean([self.mer[Range.min], self.mer[Range.max]]))
         return self.mer
 
     def calculate_der(self) -> dict:
@@ -55,8 +55,8 @@ class Cat:
         """
         self.der = dict()
         for key in Range:
-            self.der[key] = round(self.mer[key] * self.age_modif[key], 0)
-        self.der[Range.avg] = round(statistics.mean([self.der[Range.min], self.der[Range.max]]), 0)
+            self.der[key] = round(self.mer[key] * self.age_modif[key])
+        self.der[Range.avg] = round(statistics.mean([self.der[Range.min], self.der[Range.max]]))
         return self.der
 
     def calculate_protein_needs(self) -> dict:

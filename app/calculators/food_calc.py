@@ -9,8 +9,7 @@ moisture = Nutrition.moisture.value
 carbs = Nutrition.carbs.value
 mass = 'mass'
 
-has_energy = [protein, fat,
-              carbs, fibre]
+has_energy = [protein, fat, fibre]  # as per referenced sources, carbohydrates aren't counted in digestible energy
 
 
 class Food:
@@ -21,7 +20,7 @@ class Food:
                             ash: float(kwargs[ash]),
                             moisture: float(kwargs.get(moisture, 0)),
                             carbs: 0}
-        self.mass = kwargs.get(mass, 0)
+        self.mass = int(kwargs.get(mass, 0))
 
         self.food_type = self.get_food_type()
         self.percentages[carbs] = self.calculate_carbs()
@@ -51,21 +50,19 @@ class Food:
         the percentages of digested analytical ingredients (fat, protein, carbs, fibre) and their kcal per gram
 
         Gross energy calculations as per
-        FEDIAF Nutritional Guidelines (2019), as detailed in
+        FEDIAF Nutritional Guidelines (2022), as detailed in
         Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
         7.2.2.1. Gross energy, Table VII-5.
         Predicted gross energy values of protein, fat and carbohydrate
-        http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
-
+        https://europeanpetfood.org/self-regulation/nutritional-guidelines/
 
         Returns
         -------
         float
         """
         gross_energy = 0
-        for food_item in gross_energy_values.keys():
-            if food_item in has_energy:
-                gross_energy += self.percentages[food_item] * gross_energy_values[food_item]
+        for food_item in has_energy:
+            gross_energy += self.percentages[food_item] * gross_energy_values[food_item]
         return round(gross_energy, 2)
 
     def get_food_type(self) -> FoodType:
@@ -86,11 +83,11 @@ class Food:
         Calculates and sets kcal amount per 100g for self.
         -------
         Formulas and numbers for digestible energy calculation come from
-        FEDIAF Nutritional Guidelines(2019),
+        FEDIAF Nutritional Guidelines(2022),
         as detailed in
         Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
         7.2.2.2. Metabolisable energy
-        http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
+        https://europeanpetfood.org/self-regulation/nutritional-guidelines/
 
         Returns
         -------        
@@ -101,9 +98,9 @@ class Food:
         fibre_dry_mass_perc = \
             (self.percentages[fibre] * self.percentages[moisture]) / 100
 
-        digestibility_modif = 87.9 - (0.88 * fibre_dry_mass_perc)
+        digestibility_modif = 87.9 - (0.88 * fibre_dry_mass_perc)  # as per cited paper
         digestible_energy = (gross_energy * digestibility_modif) / 100
-        metabolic_energy_per_100 = digestible_energy - (0.77 * self.percentages[protein])
+        metabolic_energy_per_100 = digestible_energy - (0.77 * self.percentages[protein])  # as per cited paper
         self.kcal_100g = round(metabolic_energy_per_100, 2)
         return self.kcal_100g
 

@@ -16,11 +16,11 @@ protein_needs_bodyweight = {
 }
 
 # Nutritional requirements per 100g of dry mass as per
-# FEDIAF Nutritional Guidelines (2019), as detailed in
+# FEDIAF Nutritional Guidelines (2022), as detailed in
 # Nutritional Guidelines For Complete and Complementary Pet Food for Cats and Dogs,
 # section 3.2. Tables with nutrient recommendations, subsection 3.2.3.
 # Recommended nutrient levels for cats TABLE III-4
-# http://www.fediaf.org/images/FEDIAF_Nutritional_Guidelines_2019_Update_030519.pdf
+# https://europeanpetfood.org/self-regulation/nutritional-guidelines/
 # and
 # as per AAFCO guidelines (2014) as detailed in
 # AAFCO Methods For Substantiating Nutritional Adequacy Of Dog And Cat Foods

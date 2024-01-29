@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import DecimalField, SelectField, SubmitField, BooleanField, FormField
-from wtforms.validators import NumberRange, NoneOf, Optional, InputRequired, DataRequired
+from wtforms import DecimalField, SelectField, SubmitField, BooleanField
+from wtforms.validators import NumberRange, NoneOf, Optional, InputRequired
 
 from app import labels
 from app.enums import Nutrition, FoodRatings
@@ -13,7 +13,7 @@ ages = ages.items()
 
 food_data = [Nutrition.protein.value, Nutrition.fat.value,
              Nutrition.fibre.value, Nutrition.ash.value,
-             Nutrition.moisture.value]
+             Nutrition.moisture.value, 'mass']
 food_quality_data = [FoodRatings.grains, FoodRatings.grains3.value, FoodRatings.plants.value,
                      FoodRatings.plants3.value, FoodRatings.organs.value, FoodRatings.byproducts.value,
                      FoodRatings.vitamins.value, FoodRatings.taurine.value, FoodRatings.preservatives.value]
